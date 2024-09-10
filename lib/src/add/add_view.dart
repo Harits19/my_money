@@ -1,0 +1,268 @@
+import 'package:flutter/material.dart';
+import 'package:my_money/src/add/add_model.dart';
+import 'package:my_money/src/add/components/action_view.dart';
+import 'package:my_money/src/components/my_column.dart';
+import 'package:my_money/src/components/my_row.dart';
+
+class AddView extends StatefulWidget {
+  const AddView({super.key});
+
+  static const routeName = '/add';
+
+  @override
+  State<AddView> createState() => _AddViewState();
+}
+
+class _AddViewState extends State<AddView> {
+  String? selectedType;
+
+  @override
+  Widget build(BuildContext context) {
+    final List<AddTypeModel> tabBar = [
+      AddTypeModel(
+        details: [
+          AddTypeDetailModel(
+            title: "Account",
+            detail: "Account",
+            icon: Icons.wallet,
+          ),
+          AddTypeDetailModel(
+            title: "Category",
+            detail: "Category",
+            icon: Icons.label,
+          ),
+        ],
+        title: 'INCOME',
+      ),
+      AddTypeModel(
+        details: [
+          AddTypeDetailModel(
+            title: "Account",
+            detail: "Account",
+            icon: Icons.wallet,
+          ),
+          AddTypeDetailModel(
+            title: "Category",
+            detail: "Category",
+            icon: Icons.label,
+          )
+        ],
+        title: 'EXPENSE',
+      ),
+      AddTypeModel(
+        details: [
+          AddTypeDetailModel(
+            title: "From",
+            detail: "Account",
+            icon: Icons.wallet,
+          ),
+          AddTypeDetailModel(
+            title: "To",
+            detail: "Account",
+            icon: Icons.wallet,
+          )
+        ],
+        title: 'TRANSFER',
+      ),
+    ];
+
+    final selectedTab = tabBar.firstWhere((item) => item.title == selectedType);
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ActionView(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  text: 'Close',
+                  icon: Icons.close,
+                ),
+                ActionView(
+                  onPressed: () {},
+                  text: 'SAVE',
+                  icon: Icons.check,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            MyRow.separated(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              separator: const SizedBox(
+                height: 12,
+                child: VerticalDivider(),
+              ),
+              children: tabBar
+                  .map(
+                    (item) => Row(
+                      children: [
+                        Opacity(
+                          opacity: selectedType == item.title ? 1 : 0,
+                          child: const Icon(Icons.check_circle),
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            selectedType = item.title;
+                            setState(() {});
+                          },
+                          child: Text(item.title),
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  ...selectedTab.details.map(
+                    (item) => Expanded(
+                      child: Column(
+                        children: [
+                          Text(
+                            item.title,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      Text(
+                                        "Select an ${item.title}",
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      MyColumn.separated(
+                                        separator: const Divider(),
+                                        children: [
+                                          ...List.generate(
+                                            3,
+                                            (index) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                    vertical: 8,
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.wallet,
+                                                        size: 40,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          "Card",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Rp1000,000.00",
+                                                        style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: OutlinedButton(
+                                          onPressed: () {},
+                                          child: const Text("Add new account"),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    item.icon,
+                                    size: 32,
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    item.detail,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

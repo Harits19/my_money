@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/accounts/accounts_view.dart';
+import 'package:my_money/src/add/add_view.dart';
 import 'package:my_money/src/analysis/analysis_view.dart';
 import 'package:my_money/src/budgets/budgets_view.dart';
 import 'package:my_money/src/categories/categories_view.dart';
@@ -80,6 +81,12 @@ class _DashboardViewState extends State<DashboardView> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.restorablePushNamed(context, AddView.routeName);
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Theme.of(context).disabledColor,
@@ -92,7 +99,10 @@ class _DashboardViewState extends State<DashboardView> {
         items: menus.map((item) => item.bottomNavigationBarItem).toList(),
       ),
       drawer: const Drawer(),
-      body: menus[selectedBotNav].view,
+      body: IndexedStack(
+        index: selectedBotNav,
+        children: menus.map((item) => item.view).toList(),
+      ),
     );
   }
 }

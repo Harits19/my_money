@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:my_money/src/add/add_view.dart';
 import 'package:my_money/src/dashboard/dashboard_view.dart';
 import 'package:my_money/src/search/search_view.dart';
 
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
           // returns to the app after it has been killed while running in the
           // background.
           restorationScopeId: 'app',
+          debugShowCheckedModeBanner: false,
 
           // Provide the generated AppLocalizations to the MaterialApp. This
           // allows descendant Widgets to display the correct translations
@@ -69,6 +71,8 @@ class MyApp extends StatelessWidget {
               settings: routeSettings,
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
+                  case AddView.routeName:
+                    return const AddView();
                   case SearchView.routeName:
                     return const SearchView();
                   default:
