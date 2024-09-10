@@ -18,35 +18,25 @@ class _AddViewState extends State<AddView> {
 
   @override
   Widget build(BuildContext context) {
+    final incomeExpenseDetail = [
+      AddTypeDetailModel(
+        title: "Account",
+        detail: "Account",
+        icon: Icons.wallet,
+      ),
+      AddTypeDetailModel(
+        title: "Category",
+        detail: "Category",
+        icon: Icons.label,
+      ),
+    ];
     final List<AddTypeModel> tabBar = [
       AddTypeModel(
-        details: [
-          AddTypeDetailModel(
-            title: "Account",
-            detail: "Account",
-            icon: Icons.wallet,
-          ),
-          AddTypeDetailModel(
-            title: "Category",
-            detail: "Category",
-            icon: Icons.label,
-          ),
-        ],
+        details: incomeExpenseDetail,
         title: 'INCOME',
       ),
       AddTypeModel(
-        details: [
-          AddTypeDetailModel(
-            title: "Account",
-            detail: "Account",
-            icon: Icons.wallet,
-          ),
-          AddTypeDetailModel(
-            title: "Category",
-            detail: "Category",
-            icon: Icons.label,
-          )
-        ],
+        details: incomeExpenseDetail,
         title: 'EXPENSE',
       ),
       AddTypeModel(
@@ -65,6 +55,154 @@ class _AddViewState extends State<AddView> {
         title: 'TRANSFER',
       ),
     ];
+
+    void showAccountList() {
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const ModalTitle(
+                title: "Select an account",
+              ),
+              MyColumn.separated(
+                separator: const Divider(),
+                children: [
+                  ...List.generate(
+                    3,
+                    (index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.wallet,
+                                size: 40,
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "Card",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "Rp1000,000.00",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: OutlinedButton(
+                  onPressed: () {},
+                  child: const Text("Add new account"),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    void showCategoryList() {
+      final List<CategoryModel> list = [
+        CategoryModel(
+          name: "Awards",
+          icon: Icons.money,
+        ),
+        CategoryModel(
+          name: "Coupons",
+          icon: Icons.money,
+        ),
+        CategoryModel(
+          name: "Grants",
+          icon: Icons.money,
+        ),
+        CategoryModel(
+          name: "Lottery",
+          icon: Icons.money,
+        ),
+        CategoryModel(
+          name: "Refunds",
+          icon: Icons.money,
+        ),
+        CategoryModel(
+          name: "Rental",
+          icon: Icons.money,
+        ),
+        CategoryModel(
+          name: "Salary",
+          icon: Icons.money,
+        ),
+        CategoryModel(
+          name: "Sale",
+          icon: Icons.money,
+        ),
+      ];
+      showModalBottomSheet(
+        context: context,
+        builder: (context) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const ModalTitle(title: "Select a category"),
+            GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 3,
+              children: [
+                ...list.map((item) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          item.icon,
+                          size: 40,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          item.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                })
+              ],
+            )
+          ],
+        ),
+      );
+    }
 
     final selectedTab = tabBar.firstWhere((item) => item.title == selectedType);
     return Scaffold(
@@ -145,86 +283,11 @@ class _AddViewState extends State<AddView> {
                           ),
                           InkWell(
                             onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      Text(
-                                        "Select an ${item.title}",
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      MyColumn.separated(
-                                        separator: const Divider(),
-                                        children: [
-                                          ...List.generate(
-                                            3,
-                                            (index) {
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal: 16,
-                                                    vertical: 8,
-                                                  ),
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.wallet,
-                                                        size: 40,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 8,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          "Card",
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        "Rp1000,000.00",
-                                                        style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: OutlinedButton(
-                                          onPressed: () {},
-                                          child: const Text("Add new account"),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              if (item.detail == 'Account') {
+                                showAccountList();
+                              } else if (item.detail == 'Category') {
+                                showCategoryList();
+                              }
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -261,6 +324,30 @@ class _AddViewState extends State<AddView> {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ModalTitle extends StatelessWidget {
+  const ModalTitle({
+    super.key,
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
