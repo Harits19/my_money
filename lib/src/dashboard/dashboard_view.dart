@@ -88,7 +88,7 @@ class _DashboardViewState extends State<DashboardView> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Theme.of(context).primaryColor,
+        selectedItemColor: Theme.of(context).primaryIconTheme.color,
         unselectedItemColor: Theme.of(context).disabledColor,
         showUnselectedLabels: true,
         currentIndex: selectedBotNav,

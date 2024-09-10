@@ -28,3 +28,15 @@ class CategoryModel {
 
   CategoryModel({required this.name, required this.icon});
 }
+
+class AccountTypeModel {
+  final String name;
+  final IconData icon;
+  final int? total;
+
+  AccountTypeModel({
+    required this.name,
+    required this.icon,
+    this.total = 0,
+  });
+}
