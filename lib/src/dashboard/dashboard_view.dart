@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_money/src/accounts/accounts_view.dart';
 import 'package:my_money/src/add/add_view.dart';
-import 'package:my_money/src/analysis/analysis_view.dart';
-import 'package:my_money/src/budgets/budgets_view.dart';
-import 'package:my_money/src/categories/categories_view.dart';
-import 'package:my_money/src/dashboard/dashboard_model.dart';
-import 'package:my_money/src/records/records_view.dart';
+import 'package:my_money/src/dashboard/dashboard_constan.dart';
 import 'package:my_money/src/search/search_view.dart';
 
 class DashboardView extends StatefulWidget {
@@ -20,54 +15,6 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   Widget build(BuildContext context) {
-    final menus = <DashboardModel>[
-      DashboardModel(
-        bottomNavigationBarItem: const BottomNavigationBarItem(
-          icon: Icon(
-            Icons.list,
-          ),
-          label: 'Records',
-        ),
-        view: const RecordsView(),
-      ),
-      DashboardModel(
-        bottomNavigationBarItem: const BottomNavigationBarItem(
-          icon: Icon(
-            Icons.analytics,
-          ),
-          label: 'Analysis',
-        ),
-        view: const AnalysisView(),
-      ),
-      DashboardModel(
-        bottomNavigationBarItem: const BottomNavigationBarItem(
-          icon: Icon(
-            Icons.calculate,
-          ),
-          label: 'Budgets',
-        ),
-        view: const BudgetsView(),
-      ),
-      DashboardModel(
-        bottomNavigationBarItem: const BottomNavigationBarItem(
-          icon: Icon(
-            Icons.wallet,
-          ),
-          label: 'Accounts',
-        ),
-        view: const AccountView(),
-      ),
-      DashboardModel(
-        bottomNavigationBarItem: const BottomNavigationBarItem(
-          icon: Icon(
-            Icons.label,
-          ),
-          label: 'Categories',
-        ),
-        view: const CategoriesView(),
-      )
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("MyMoney"),
@@ -96,12 +43,41 @@ class _DashboardViewState extends State<DashboardView> {
           selectedBotNav = index;
           setState(() {});
         },
-        items: menus.map((item) => item.bottomNavigationBarItem).toList(),
+        items:
+            dashboardMenus.map((item) => item.bottomNavigationBarItem).toList(),
       ),
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ...ThemeMode.values.map(
+                  (item) => Row(
+                    children: [
+                      Radio(
+                        value: item,
+                        groupValue: ThemeMode.dark,
+                        onChanged: (value) {},
+                      ),
+                      Text(
+                        item.name.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
       body: IndexedStack(
         index: selectedBotNav,
-        children: menus.map((item) => item.view).toList(),
+        children: dashboardMenus.map((item) => item.view).toList(),
       ),
     );
   }
