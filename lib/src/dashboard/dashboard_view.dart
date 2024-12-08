@@ -17,7 +17,7 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("MyMoney"),
+        title: const Text("Uangku"),
         centerTitle: true,
         actions: [
           IconButton(
