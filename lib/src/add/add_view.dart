@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_money/src/add/add_model.dart';
 import 'package:my_money/src/add/components/action_view.dart';
 import 'package:my_money/src/add/add_constant.dart';
 import 'package:my_money/src/add/components/calculator_button.dart';
@@ -21,7 +20,6 @@ class AddView extends StatefulWidget {
 }
 
 class _AddViewState extends State<AddView> {
-  String selectedType = tabBar[1].title;
   String total = "0";
 
   var date = DateTime.now();
@@ -29,11 +27,10 @@ class _AddViewState extends State<AddView> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedTab = tabBar.firstWhere((item) => item.title == selectedType);
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -60,35 +57,6 @@ class _AddViewState extends State<AddView> {
                 const SizedBox(
                   height: 8,
                 ),
-                MyRow.separated(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  separator: const SizedBox(
-                    height: 12,
-                    child: VerticalDivider(),
-                  ),
-                  children: tabBar
-                      .map(
-                        (item) => Row(
-                          children: [
-                            Opacity(
-                              opacity: selectedType == item.title ? 1 : 0,
-                              child: const Icon(Icons.check_circle),
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                selectedType = item.title;
-                                setState(() {});
-                              },
-                              child: Text(item.title),
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList(),
-                ),
                 const SizedBox(
                   height: 8,
                 ),
@@ -97,7 +65,7 @@ class _AddViewState extends State<AddView> {
                     width: 4,
                   ),
                   children: [
-                    ...selectedTab.details.map(
+                    ...addTypeDetailModel.map(
                       (item) => Expanded(
                         child: Column(
                           children: [

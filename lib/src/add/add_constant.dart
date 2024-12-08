@@ -14,32 +14,18 @@ final incomeExpenseDetail = [
   ),
 ];
 
-final List<AddTypeModel> tabBar = [
-  AddTypeModel(
-    details: incomeExpenseDetail,
-    title: 'INCOME',
+final List<AddTypeDetailModel> addTypeDetailModel = [
+  AddTypeDetailModel(
+    title: "From",
+    detail: "Account",
+    icon: Icons.wallet,
   ),
-  AddTypeModel(
-    details: incomeExpenseDetail,
-    title: 'EXPENSE',
-  ),
-  AddTypeModel(
-    details: [
-      AddTypeDetailModel(
-        title: "From",
-        detail: "Account",
-        icon: Icons.wallet,
-      ),
-      AddTypeDetailModel(
-        title: "To",
-        detail: "Account",
-        icon: Icons.wallet,
-      )
-    ],
-    title: 'TRANSFER',
-  ),
+  AddTypeDetailModel(
+    title: "To",
+    detail: "Account",
+    icon: Icons.wallet,
+  )
 ];
-
 final accountTypeList = [
   AccountTypeModel(
     name: 'Card',
