@@ -8,7 +8,7 @@ import 'package:my_money/src/records/records_view.dart';
 
 final dashboardMenus = <DashboardModel>[
   DashboardModel(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
+    bottomNavigationBarItem: const NavigationDestination(
       icon: Icon(
         Icons.list,
       ),
@@ -17,7 +17,7 @@ final dashboardMenus = <DashboardModel>[
     view: const RecordsView(),
   ),
   DashboardModel(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
+    bottomNavigationBarItem: const NavigationDestination(
       icon: Icon(
         Icons.analytics,
       ),
@@ -26,7 +26,7 @@ final dashboardMenus = <DashboardModel>[
     view: const AnalysisView(),
   ),
   DashboardModel(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
+    bottomNavigationBarItem: const NavigationDestination(
       icon: Icon(
         Icons.calculate,
       ),
@@ -35,7 +35,7 @@ final dashboardMenus = <DashboardModel>[
     view: const BudgetsView(),
   ),
   DashboardModel(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
+    bottomNavigationBarItem: const NavigationDestination(
       icon: Icon(
         Icons.wallet,
       ),
@@ -44,7 +44,7 @@ final dashboardMenus = <DashboardModel>[
     view: const AccountView(),
   ),
   DashboardModel(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
+    bottomNavigationBarItem: const NavigationDestination(
       icon: Icon(
         Icons.label,
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DashboardModel {
-  final BottomNavigationBarItem bottomNavigationBarItem;
+  final NavigationDestination bottomNavigationBarItem;
   final Widget view;
 
   DashboardModel({required this.bottomNavigationBarItem, required this.view});

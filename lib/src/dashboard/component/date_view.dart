@@ -5,6 +5,7 @@ import 'package:my_money/src/components/height.dart';
 import 'package:my_money/src/components/width.dart';
 import 'package:my_money/src/model/view_mode.dart';
 import 'package:my_money/src/records/components/filter_dialog.dart';
+import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/util/date_util.dart';
 
 class DateView extends StatefulWidget {
@@ -15,22 +16,13 @@ class DateView extends StatefulWidget {
 }
 
 class _DateViewState extends State<DateView> {
-  DateTime date = DateTime.now();
-
-  changeDate(bool isNext) {
-    final value = isNext ? 1 : -1;
-
-    final newDate = DateTime(date.year, date.month + value, date.day);
-
-    date = newDate;
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
+    final date = DateState.of(context).date;
+    final changeMonth = DateState.of(context).changeMonth;
+
     const double size = 32;
 
-    // return const FilterDialog();
     return Row(
       children: [
         Opacity(
@@ -49,7 +41,7 @@ class _DateViewState extends State<DateView> {
             children: [
               IconButton(
                 onPressed: () {
-                  changeDate(true);
+                  changeMonth(false);
                 },
                 icon: const Icon(
                   Icons.chevron_left,
@@ -70,7 +62,7 @@ class _DateViewState extends State<DateView> {
               ),
               IconButton(
                 onPressed: () {
-                  changeDate(false);
+                  changeMonth(true);
                 },
                 icon: const Icon(
                   Icons.chevron_right,
