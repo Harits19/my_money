@@ -1,9 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:my_money/src/components/height.dart';
-import 'package:my_money/src/components/width.dart';
-import 'package:my_money/src/model/view_mode.dart';
 import 'package:my_money/src/records/components/filter_dialog.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/util/date_util.dart';
