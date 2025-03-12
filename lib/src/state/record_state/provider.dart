@@ -28,7 +28,7 @@ class _RecordProviderState extends State<RecordProvider> {
     final list = await CsvService.readFromFile(file);
     if (list == null) return;
 
-    final parsedList = RecordModel.fromCSV(list);
+    final parsedList = RecordModel.fromCSV(list).reversed.toList();
     records = parsedList;
     setState(() {});
 

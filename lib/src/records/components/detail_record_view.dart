@@ -7,15 +7,16 @@ import 'package:my_money/src/util/date_util.dart';
 class DetailRecordView extends StatelessWidget {
   const DetailRecordView({
     super.key,
-    required this.item,
+    required this.list,
+    required this.groupedTime,
   });
 
-  final RecordModel item;
+  final List<RecordModel> list;
+  final DateTime groupedTime;
 
   @override
   Widget build(BuildContext context) {
-    final idrFormat = CurrencyUtil.toIdr(item.amount);
-    final date = item.time;
+    final date = groupedTime;
 
     return Card(
       clipBehavior: Clip.hardEdge,
@@ -31,13 +32,13 @@ class DetailRecordView extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
-        children: [1, 1, 1, 1].map((item) {
+        children: list.map((item) {
           return ListTile(
             onTap: () {
               DetailRecordDialog.show(context);
             },
-            title: Text(idrFormat),
-            subtitle: Text("${this.item.category} - ${this.item.account}"),
+            title: Text(CurrencyUtil.toIdr(item.amount)),
+            subtitle: Text("${item.category} - ${item.account}"),
           );
         }).toList(),
       ),

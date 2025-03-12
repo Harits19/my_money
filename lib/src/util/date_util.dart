@@ -8,7 +8,7 @@ class DateUtil {
 
   /// eg. Sep 30, Monday
   static String format2(DateTime date) {
-    return DateFormat("MMM dd, EEEE").format(date);
+    return DateFormat("EEEE, dd MMM yyyy").format(date);
   }
 
   /// eg. Sep 30, 2024 9:38 PM
