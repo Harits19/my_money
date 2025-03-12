@@ -37,7 +37,12 @@ class DetailRecordView extends StatelessWidget {
             onTap: () {
               DetailRecordDialog.show(context);
             },
-            title: Text(CurrencyUtil.toIdr(item.amount)),
+            title: Text(
+              CurrencyUtil.toIdr(item.amount),
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             subtitle: Text("${item.category} - ${item.account}"),
           );
         }).toList(),

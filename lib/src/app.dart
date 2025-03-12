@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/home/home_view.dart';
 import 'package:my_money/src/services/local_storage_service.dart';
+import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/provider.dart';
 
 /// The Widget that configures your application.
@@ -34,8 +35,10 @@ class _MyAppState extends State<MyApp> {
                 child: CircularProgressIndicator(),
               ),
             )
-          : const RecordProvider(
-              child: HomeView(),
+          : const DateProvider(
+              child: RecordProvider(
+                child: HomeView(),
+              ),
             ),
     );
   }

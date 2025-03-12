@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 
 class RecordState extends InheritedWidget {
@@ -7,9 +8,18 @@ class RecordState extends InheritedWidget {
     required this.records,
     required super.child,
     required this.importCSV,
+    required this.selectedDate,
   });
 
   final List<RecordModel> records;
+  final DateTime selectedDate;
+
+  List<RecordModel> get filterByMonth {
+    return records.where((item) {
+      final format = DateFormat("YYYY MMM");
+      return format.format(item.time) == format.format(selectedDate);
+    }).toList();
+  }
 
   final VoidCallback importCSV;
 
