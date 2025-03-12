@@ -1,24 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:my_money/src/home/home_constant.dart';
+import 'package:my_money/src/records/records_view.dart';
+import 'package:my_money/src/setting/setting_view.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  int selectedBottomBar = 0;
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: 0,
-        onDestinationSelected: (int index) {},
-        destinations: const <Widget>[
-          NavigationDestination(icon: Icon(Icons.explore), label: 'Explore'),
-          NavigationDestination(icon: Icon(Icons.commute), label: 'Commute'),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.bookmark),
-            icon: Icon(Icons.bookmark_border),
-            label: 'Saved',
-          ),
-        ],
+    final listMenu = <NavigationBarModel>[
+      NavigationBarModel(
+        destination: const NavigationDestination(
+          icon: Icon(Icons.home),
+          label: 'Records',
+        ),
+        view: const RecordsView(),
       ),
+      NavigationBarModel(
+        destination: const NavigationDestination(
+          icon: Icon(Icons.category),
+          label: 'Category',
+        ),
+        view: const Placeholder(),
+      ),
+      NavigationBarModel(
+        destination: const NavigationDestination(
+          icon: Icon(Icons.settings),
+          label: 'Setting',
+        ),
+        view: const SettingView(),
+      ),
+    ];
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("My Money"),
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: selectedBottomBar,
+        onDestinationSelected: (int index) {
+          selectedBottomBar = index;
+          setState(() {});
+        },
+        destinations: listMenu.map((item) {
+          return item.destination;
+        }).toList(),
+      ),
+      body: SafeArea(child: listMenu[selectedBottomBar].view),
     );
   }
 }

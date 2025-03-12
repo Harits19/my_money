@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/home/home_view.dart';
+import 'package:my_money/src/state/record_state/provider.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -10,7 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: HomeView(),
+      home: RecordProvider(
+        child: HomeView(),
+      ),
     );
   }
 }
