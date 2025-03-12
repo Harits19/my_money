@@ -5,9 +5,18 @@ enum RecordType {
   expense,
   income;
 
+  static RecordType fromCSVString(String value) {
+    switch (value.trim()) {
+      case '(-) Expense':
+        return RecordType.expense;
+      default:
+        return RecordType.income;
+    }
+  }
+
   static RecordType fromString(String value) {
     switch (value) {
-      case "(-) Expense":
+      case "expense":
         return RecordType.expense;
       default:
         return RecordType.income;
@@ -31,17 +40,26 @@ class RecordModel {
       required this.account,
       required this.notes});
 
-  void log() {
-    final detail = {
+  Map<String, dynamic> toJson() {
+    return {
       "time": time.toString(),
-      "type": type.toString(),
+      "type": type.name,
       "amount": amount,
       "category": category,
       "account": account,
       "notes": notes,
     };
+  }
 
-    myLog.i('detail $detail');
+  factory RecordModel.fromJson(Map<String, dynamic> json) {
+    return RecordModel(
+      time: DateTime.parse(json['time']),
+      type: RecordType.fromString(json['type']),
+      amount: json['amount'],
+      category: json['category'],
+      account: json['account'],
+      notes: json['notes'],
+    );
   }
 
   static List<RecordModel> fromCSV(List<List<String>> value) {
@@ -55,7 +73,7 @@ class RecordModel {
         final dateTime = format.tryParse("${item[0]},${item[1]}");
         return RecordModel(
           time: dateTime ?? DateTime.now(),
-          type: RecordType.fromString(item[2]),
+          type: RecordType.fromCSVString(item[2]),
           amount: num.tryParse(item[3]) ?? 0,
           category: item[4],
           account: item[5],
@@ -75,5 +93,13 @@ class RecordModel {
     }
 
     return filteredResult;
+  }
+
+  static List<Map<String, dynamic>> toJsonList(List<RecordModel> list) {
+    return list.map((item) => item.toJson()).toList();
+  }
+
+  static List<RecordModel> fromJsonList(List<dynamic> json) {
+    return json.map((item) => RecordModel.fromJson(item)).toList();
   }
 }

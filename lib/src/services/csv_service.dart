@@ -14,7 +14,7 @@ class CsvService {
     final rows = data.split("\n");
 
     final list = rows.map((item) {
-      return item.split(",");
+      return item.replaceAll('"', "").split(",");
     });
 
     return list.toList();

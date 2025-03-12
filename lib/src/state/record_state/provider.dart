@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/services/csv_service.dart';
 import 'package:my_money/src/services/file_service.dart';
+import 'package:my_money/src/services/local_storage_service.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 import 'package:my_money/src/state/record_state/state.dart';
 
@@ -30,6 +31,25 @@ class _RecordProviderState extends State<RecordProvider> {
     final parsedList = RecordModel.fromCSV(list);
     records = parsedList;
     setState(() {});
+
+    final listJson = RecordModel.toJsonList(parsedList);
+
+    LocalStorageService.setValue(LocalStorageKey.records, listJson);
+  }
+
+  void loadLocalStorage() async {
+    final localValue = LocalStorageService.getValue(LocalStorageKey.records);
+
+    final parsedValue = RecordModel.fromJsonList(localValue);
+
+    records = parsedValue;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadLocalStorage();
   }
 
   @override
