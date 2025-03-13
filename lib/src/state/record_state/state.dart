@@ -9,10 +9,13 @@ class RecordState extends InheritedWidget {
     required super.child,
     required this.importCSV,
     required this.selectedDate,
+    required this.deleteAllRecords,
   });
 
   final List<RecordModel> records;
   final DateTime selectedDate;
+  final VoidCallback importCSV;
+  final VoidCallback deleteAllRecords;
 
   List<RecordModel> get filterByMonth {
     return records.where((item) {
@@ -20,8 +23,6 @@ class RecordState extends InheritedWidget {
       return format.format(item.time) == format.format(selectedDate);
     }).toList();
   }
-
-  final VoidCallback importCSV;
 
   static RecordState? maybeOf(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<RecordState>();

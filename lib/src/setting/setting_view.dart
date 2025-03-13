@@ -1,8 +1,5 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:my_money/src/services/google_service.dart';
+import 'package:my_money/src/services/google_sheet_service.dart';
 import 'package:my_money/src/state/record_state/state.dart';
 
 class SettingView extends StatelessWidget {
@@ -10,6 +7,7 @@ class SettingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final recordState = RecordState.of(context);
     return Column(
       children: [
         ListTile(
@@ -23,11 +21,11 @@ class SettingView extends StatelessWidget {
             ],
           ),
           onTap: () async {
-            RecordState.of(context).importCSV();
+            recordState.importCSV();
           },
         ),
-        ListTile(
-          title: const Row(
+        const ListTile(
+          title: Row(
             children: [
               Icon(Icons.input),
               SizedBox(
@@ -36,9 +34,36 @@ class SettingView extends StatelessWidget {
               Text("Backup to Google Spreadsheet")
             ],
           ),
+          onTap: GoogleSheetService.startBackup,
+        ),
+        ListTile(
+          title: const Row(
+            children: [
+              Icon(Icons.input),
+              SizedBox(
+                width: 8,
+              ),
+              Text("Get All Spreadsheet File")
+            ],
+          ),
           onTap: () async {
-            GoogleService.authenticate();
+            GoogleSheetService.getAllSpreadSheetFiles();
           },
+        ),
+        ListTile(
+          title: const Row(
+            children: [
+              Icon(
+                Icons.delete_forever,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Text("Delete All Records")
+            ],
+          ),
+          onTap: recordState.deleteAllRecords,
         ),
       ],
     );

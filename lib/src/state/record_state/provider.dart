@@ -54,6 +54,12 @@ class _RecordProviderState extends State<RecordProvider> {
     setState(() {});
   }
 
+  void deleteAllRecords() {
+    records = [];
+    LocalStorageService.setValue(LocalStorageKey.records, []);
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -63,6 +69,7 @@ class _RecordProviderState extends State<RecordProvider> {
   @override
   Widget build(BuildContext context) {
     return RecordState(
+      deleteAllRecords: deleteAllRecords,
       records: records,
       importCSV: importCSV,
       selectedDate: DateState.of(context).date,

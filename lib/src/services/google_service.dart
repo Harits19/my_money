@@ -1,24 +1,60 @@
-import 'package:googleapis/sheets/v4.dart';
-import 'package:googleapis_auth/auth_io.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis_auth/googleapis_auth.dart';
+import 'package:http/http.dart';
 import 'package:my_money/src/services/debug_service.dart';
 
-const clientIdKey =
-    "446239923751-isvift1eheeqksfk47ipl29qmnepmirv.apps.googleusercontent.com";
-
 class GoogleService {
-  GoogleService._();
+  GoogleService({
+    required this.scopes,
+  });
 
-  static Future<AutoRefreshingAuthClient> authenticate() async {
-    final clientId = ClientId(clientIdKey);
-    final scopes = [SheetsApi.spreadsheetsScope];
+  final List<String> scopes;
 
-    final flow = await clientViaUserConsent(clientId, scopes, prompt);
-    return flow;
+   AuthClient? _authClient;
+
+   Future<AuthClient?> get authClient async {
+    _authClient ??= await authenticate();
+    return _authClient;
   }
 
-  static void prompt(String url) {
-    myLog.i("Please go to the following URL and grant access:");
-    myLog.i("  => $url");
-    myLog.i("Enter the authorization code:");
+   Future<AuthClient?> authenticate() async {
+    final googleSignIn = GoogleSignIn(
+      scopes: scopes,
+    );
+
+    final googleUser = await googleSignIn.signIn();
+    if (googleUser == null) {
+      myLog.i("authenticate - google user is null");
+      return null;
+    }
+
+    myLog
+        .i("authenticate - success login with client ${googleUser.toString()}");
+
+    final googleAuth = await googleUser.authentication;
+
+    myLog.i(
+        "authenticate - success login with googleAuth ${googleAuth.accessToken}");
+
+    final client = authenticatedClient(
+      Client(),
+      AccessCredentials(
+        AccessToken(
+          "Bearer",
+          googleAuth.accessToken!,
+          DateTime.now()
+              .add(
+                const Duration(hours: 1),
+              )
+              .toUtc(),
+        ),
+        googleAuth.idToken,
+        scopes,
+      ),
+    );
+
+    myLog.i("authenticate - success login with client ${client.toString()}");
+
+    return client;
   }
 }
