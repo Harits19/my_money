@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/services/csv_service.dart';
+import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/file_service.dart';
 import 'package:my_money/src/services/local_storage_service.dart';
 import 'package:my_money/src/state/date_state.dart';
@@ -40,6 +41,12 @@ class _RecordProviderState extends State<RecordProvider> {
 
   void loadLocalStorage() async {
     final localValue = LocalStorageService.getValue(LocalStorageKey.records);
+
+    if (localValue is! List<dynamic>) {
+      myLog.i(
+          "loadLocalStorage - returned value from local storage is not List<dynamic>, the values is $localValue");
+      return;
+    }
 
     final parsedValue = RecordModel.fromJsonList(localValue);
 

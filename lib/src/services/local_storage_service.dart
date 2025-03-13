@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:my_money/src/services/debug_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum LocalStorageKey {
@@ -14,11 +15,20 @@ class LocalStorageService {
   }
 
   static setValue(LocalStorageKey key, Object value) async {
-    await _prefs.setString(key.name, jsonEncode(value));
+    try {
+      await _prefs.setString(key.name, jsonEncode(value));
+    } catch (e) {
+      myLog.e(
+          "setValue - failed to set value with key $key and value $value, error detail ${e.toString()}");
+    }
   }
 
-  static dynamic getValue(LocalStorageKey key) {
-    final result = _prefs.get(key.name) as String;
-    return jsonDecode(result);
+  static Object? getValue(LocalStorageKey key) {
+    final result = _prefs.get(key.name);
+    if (result is String) return jsonDecode(result);
+
+    myLog.i("getValue - key $key is not string value, the value is $result");
+
+    return null;
   }
 }
