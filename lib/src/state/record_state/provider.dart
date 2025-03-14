@@ -22,6 +22,8 @@ class RecordProvider extends StatefulWidget {
 
 class _RecordProviderState extends State<RecordProvider> {
   List<RecordModel> records = [];
+  bool isLoading = false;
+  String? spreadsheetId;
 
   void importCSV() async {
     final file = await FileService.pickCSV();
@@ -61,30 +63,57 @@ class _RecordProviderState extends State<RecordProvider> {
     setState(() {});
   }
 
-  void startBackup() async {
-    final files = await GoogleSheetService.getAllSpreadSheetFiles();
+  void setLoading(bool value) {
+    isLoading = value;
+    setState(() {});
+  }
 
-    if (files.isEmpty) {
-      myLog.i(
-          "startBackup - returned files is empty, start create new file for backup data");
-      await GoogleSheetService.createSpreadsheet();
-      return;
-    } else {
-      myLog.i(
-          "startBackup - returned files is not empty, start edit first index file");
+  void startSync() async {
+    try {
+      setLoading(true);
 
-      final file = files.first;
-      final id = file.id;
+      final file = await GoogleSheetService.getSpreadsheetFile();
+      final id = file?.id;
+
       if (id == null) {
         myLog.i(
-            "startBackup - returned id is null, can't update the file with new data");
-        return;
+            "startSync - returned id file is null, start create new file for backup data");
+        final createdSpreadsheet = await GoogleSheetService.createSpreadsheet();
+        final createdId = createdSpreadsheet.spreadsheetId;
+
+        if (createdId == null) {
+          throw Exception(
+              "startSync - createdId is null with value ${createdSpreadsheet.toJson()}");
+        }
+
+        setLink(createdId);
+
+        await GoogleSheetService.editSpreadSheet(
+          id: createdId,
+          list: records,
+          listOfTitles: RecordModel.listOfTitles(),
+        );
+      } else {
+        setLink(id);
+
+        myLog
+            .i("startSync - returned id file is not null, start edit the file");
+        await GoogleSheetService.editSpreadSheet(
+          id: id,
+          list: records,
+          listOfTitles: RecordModel.listOfTitles(),
+        );
       }
-      await GoogleSheetService.editSpreadSheet(
-        id: id,
-        list: records,
-      );
+    } catch (e) {
+      myLog.e('startSync - failed because $e');
+    } finally {
+      setLoading(false);
     }
+  }
+
+  void setLink(String id) {
+    spreadsheetId = id;
+    setState(() {});
   }
 
   @override
@@ -96,7 +125,9 @@ class _RecordProviderState extends State<RecordProvider> {
   @override
   Widget build(BuildContext context) {
     return RecordState(
-      startBackup: startBackup,
+      spreadsheetId: spreadsheetId ?? '',
+      isLoading: isLoading,
+      syncWithGoogleSpreadsheet: startSync,
       deleteAllRecords: deleteAllRecords,
       records: records,
       importCSV: importCSV,

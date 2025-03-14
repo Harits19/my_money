@@ -120,4 +120,8 @@ class RecordModel implements SheetModel {
       notes,
     ];
   }
+
+  static List<String> listOfTitles() {
+    return ["TIME", "TYPE", "AMOUNT", "CATEGORY", "ACCOUNT", "NOTES"];
+  }
 }

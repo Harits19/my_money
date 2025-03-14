@@ -6,6 +6,9 @@ import 'package:my_money/src/util/int_util.dart';
 
 abstract class SheetModel {
   List<String> toListString();
+  static List<String> listOfTitles() {
+    return [];
+  }
 }
 
 class _MapValueReturn<A, B> {
@@ -22,30 +25,25 @@ class GoogleSheetService {
   static final services = GoogleService(
       scopes: [SheetsApi.spreadsheetsScope, DriveApi.driveFileScope]);
 
-  static Future<String?> createSpreadsheet() async {
+  static Future<Spreadsheet> createSpreadsheet() async {
     final client = await services.authClient;
-    if (client == null) {
-      myLog.i("createSpreadsheet - client is null");
-      return null;
-    }
 
     final sheetsApi = SheetsApi(client);
     final Spreadsheet spreadsheet = Spreadsheet(
-      properties: SpreadsheetProperties(title: "Flutter Created Spreadsheet"),
+      properties: SpreadsheetProperties(title: "UangKu - Spreadsheet"),
     );
 
-    final response = await sheetsApi.spreadsheets.create(spreadsheet);
+    final response = await sheetsApi.spreadsheets.create(
+      spreadsheet,
+    );
 
-    myLog.i("createSpreadsheet - returned url ${response.spreadsheetUrl}");
-    return response.spreadsheetId;
+    myLog.i("createSpreadsheet - returned value ${response.toJson()}");
+    return response;
   }
 
-  static Future<List<File>> getAllSpreadSheetFiles() async {
+  static Future<File?> getSpreadsheetFile() async {
     final client = await services.authClient;
-    if (client == null) {
-      myLog.i("getAllSpreadSheetFiles - client is null");
-      return [];
-    }
+
     final driveApi = DriveApi(client);
 
     const query = "mimeType='application/vnd.google-apps.spreadsheet'";
@@ -54,17 +52,18 @@ class GoogleSheetService {
 
     final items = fileList.items;
 
-    if (items == null) {
-      myLog.i("getAllSpreadSheetFiles - file items is null");
-      return [];
+    if (items == null || items.isEmpty) {
+      myLog.i("getSpreadsheetFile - file items is null");
+      return null;
     }
 
-    return items;
+    return items.first;
   }
 
   static _MapValueReturn<String, List<List<String>>>
-      mapValues<T extends SheetModel>({
+      _mapValues<T extends SheetModel>({
     required List<T> values,
+    required List<String> listOfTitles,
   }) {
     final mappedValues = values.map((item) {
       return item.toListString();
@@ -80,23 +79,26 @@ class GoogleSheetService {
       }}",
     );
 
+    mappedValues.insert(0, listOfTitles);
+
     return _MapValueReturn(range, mappedValues);
   }
 
-  static editSpreadSheet<T extends SheetModel>({
+  static Future<void> editSpreadSheet<T extends SheetModel>({
     required String id,
     required List<T> list,
+    required List<String> listOfTitles,
   }) async {
-    final resultMap = mapValues(values: list);
+    final resultMap = _mapValues(
+      values: list,
+      listOfTitles: listOfTitles,
+    );
 
     final values = resultMap.item2;
     final range = resultMap.item1;
 
     final client = await services.authClient;
-    if (client == null) {
-      myLog.i("editSpreadSheet - client is null");
-      return null;
-    }
+
     final sheetsApi = SheetsApi(client);
 
     final request = ValueRange()..values = values;
