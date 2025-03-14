@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_money/src/add/add_view.dart';
 import 'package:my_money/src/home/home_constant.dart';
 import 'package:my_money/src/records/records_view.dart';
 import 'package:my_money/src/setting/setting_view.dart';
@@ -41,6 +42,17 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Money"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddView()),
+          );
+        },
+        child: const Icon(
+          Icons.add,
+        ),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedBottomBar,

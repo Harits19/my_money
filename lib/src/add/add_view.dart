@@ -8,6 +8,7 @@ import 'package:my_money/src/components/modal_button.dart';
 import 'package:my_money/src/components/modal_title.dart';
 import 'package:my_money/src/components/my_column.dart';
 import 'package:my_money/src/components/my_row.dart';
+import 'package:my_money/src/components/my_text_field.dart';
 import 'package:my_money/src/components/my_vertical_divider.dart';
 
 class AddView extends StatefulWidget {
@@ -27,6 +28,78 @@ class _AddViewState extends State<AddView> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Add Record"),
+      ),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  MyTextField(
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      label: Text("Amount"),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  MyTextField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 2,
+                    decoration: const InputDecoration(
+                      label: Text(
+                        "Notes",
+                      ),
+                    ),
+                  ),
+                  Autocomplete<String>(
+                    optionsBuilder: (TextEditingValue textEditingValue) {
+                      List<String> suggestions = [
+                        "Apple",
+                        "Banana",
+                        "Cherry",
+                        "Date",
+                        "Elderberry",
+                        "Fig",
+                        "Grapes"
+                      ];
+
+                      if (textEditingValue.text.isEmpty) {
+                        return const Iterable<String>.empty();
+                      }
+
+                      return suggestions.where((String option) {
+                        return option
+                            .toLowerCase()
+                            .contains(textEditingValue.text.toLowerCase());
+                      });
+                    },
+                    onSelected: (String selection) {
+                      print("Selected: $selection");
+                    },
+                  )
+                ],
+              ),
+            ),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              child: FilledButton(
+                onPressed: () {},
+                child: const Text("SAVE"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
