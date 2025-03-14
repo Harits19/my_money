@@ -47,7 +47,7 @@ class _DateViewState extends State<DateView> {
                 width: 16,
               ),
               Text(
-                DateUtil.format1(date),
+                date.format1(),
                 style: const TextStyle(
                   fontSize: 16,
                 ),

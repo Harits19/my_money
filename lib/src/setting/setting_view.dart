@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/services/google_sheet_service.dart';
+import 'package:my_money/src/state/record_state/model.dart';
 import 'package:my_money/src/state/record_state/state.dart';
 
 class SettingView extends StatelessWidget {
@@ -24,8 +25,8 @@ class SettingView extends StatelessWidget {
             recordState.importCSV();
           },
         ),
-        const ListTile(
-          title: Row(
+        ListTile(
+          title: const Row(
             children: [
               Icon(Icons.input),
               SizedBox(
@@ -34,7 +35,7 @@ class SettingView extends StatelessWidget {
               Text("Backup to Google Spreadsheet")
             ],
           ),
-          onTap: GoogleSheetService.startBackup,
+          onTap: recordState.startBackup,
         ),
         ListTile(
           title: const Row(
@@ -65,6 +66,38 @@ class SettingView extends StatelessWidget {
           ),
           onTap: recordState.deleteAllRecords,
         ),
+        TextButton(
+          onPressed: () {
+            const spreadSheetId =
+                "1V-pf3J9khhUJvqjK2kA9-5NcapnufwMGJs7HOiVpdWc";
+            final List<RecordModel> listRecords = [
+              RecordModel(
+                time: DateTime.now(),
+                type: RecordType.expense,
+                amount: 10000,
+                category: "Food",
+                account: "Cash",
+                notes: "Jajan",
+              ),
+              RecordModel(
+                time: DateTime.now(),
+                type: RecordType.expense,
+                amount: 10000,
+                category: "Food",
+                account: "Cash",
+                notes: "Jajan 2",
+              ),
+            ];
+
+            const id = "1V-pf3J9khhUJvqjK2kA9-5NcapnufwMGJs7HOiVpdWc";
+
+            GoogleSheetService.editSpreadSheet(
+              id: id,
+              list: listRecords,
+            );
+          },
+          child: const Text('Test'),
+        )
       ],
     );
   }

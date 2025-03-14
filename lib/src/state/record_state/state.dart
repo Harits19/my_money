@@ -10,12 +10,14 @@ class RecordState extends InheritedWidget {
     required this.importCSV,
     required this.selectedDate,
     required this.deleteAllRecords,
+    required this.startBackup,
   });
 
   final List<RecordModel> records;
   final DateTime selectedDate;
   final VoidCallback importCSV;
   final VoidCallback deleteAllRecords;
+  final VoidCallback startBackup;
 
   List<RecordModel> get filterByMonth {
     return records.where((item) {

@@ -1,18 +1,18 @@
 import 'package:intl/intl.dart';
 
-class DateUtil {
+extension DateTimeExtension on DateTime {
   /// eg. September, 2024
-  static String format1(DateTime date) {
-    return DateFormat("MMMM, yyyy").format(date);
+  String format1() {
+    return DateFormat("MMMM, yyyy").format(this);
   }
 
   /// eg. Sep 30, Monday
-  static String format2(DateTime date) {
-    return DateFormat("EEEE, dd MMM yyyy").format(date);
+  String format2() {
+    return DateFormat("EEEE, dd MMM yyyy").format(this);
   }
 
   /// eg. Sep 30, 2024 9:38 PM
-  static String format3(DateTime date) {
-    return DateFormat("MMM dd, yyyy hh:mm a").format(date);
+  String format3() {
+    return DateFormat("MMM dd, yyyy hh:mm a").format(this);
   }
 }

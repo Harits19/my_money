@@ -10,17 +10,19 @@ class GoogleService {
 
   final List<String> scopes;
 
-   AuthClient? _authClient;
+  AuthClient? _authClient;
 
-   Future<AuthClient?> get authClient async {
+  Future<AuthClient?> get authClient async {
     _authClient ??= await authenticate();
     return _authClient;
   }
 
-   Future<AuthClient?> authenticate() async {
+  Future<AuthClient?> authenticate() async {
     final googleSignIn = GoogleSignIn(
       scopes: scopes,
     );
+
+    await googleSignIn.signOut();
 
     final googleUser = await googleSignIn.signIn();
     if (googleUser == null) {

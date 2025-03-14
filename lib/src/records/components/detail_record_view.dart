@@ -28,7 +28,7 @@ class DetailRecordView extends StatelessWidget {
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            DateUtil.format2(date),
+            date.format2(),
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ),

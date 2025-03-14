@@ -2,6 +2,21 @@ import 'package:googleapis/drive/v2.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/google_service.dart';
+import 'package:my_money/src/util/int_util.dart';
+
+abstract class SheetModel {
+  List<String> toListString();
+}
+
+class _MapValueReturn<A, B> {
+  final A item1;
+  final B item2;
+
+  _MapValueReturn(
+    this.item1,
+    this.item2,
+  );
+}
 
 class GoogleSheetService {
   static final services = GoogleService(
@@ -47,12 +62,36 @@ class GoogleSheetService {
     return items;
   }
 
-  static editSpreadSheet({required String id}) async {
-    const range = "Sheet1!A1:B2"; // Range to update
-    final values = [
-      ["Updated Cell 1", "Updated Cell 2"],
-      ["New Row", "More Data"]
-    ];
+  static _MapValueReturn<String, List<List<String>>>
+      mapValues<T extends SheetModel>({
+    required List<T> values,
+  }) {
+    final mappedValues = values.map((item) {
+      return item.toListString();
+    }).toList();
+    final firstRow = mappedValues.first;
+    final excelColumn = firstRow.length.getExcelColumn();
+    final range = "Sheet1!A1:$excelColumn${mappedValues.length + 1}";
+
+    myLog.i(
+      "mapValues - result ${{
+        mappedValues,
+        range,
+      }}",
+    );
+
+    return _MapValueReturn(range, mappedValues);
+  }
+
+  static editSpreadSheet<T extends SheetModel>({
+    required String id,
+    required List<T> list,
+  }) async {
+    final resultMap = mapValues(values: list);
+
+    final values = resultMap.item2;
+    final range = resultMap.item1;
+
     final client = await services.authClient;
     if (client == null) {
       myLog.i("editSpreadSheet - client is null");
@@ -71,28 +110,5 @@ class GoogleSheetService {
 
     myLog.i(
         "editSpreadSheet - success edit spreadsheet with result ${result.toJson()}");
-  }
-
-  static void startBackup() async {
-    final files = await getAllSpreadSheetFiles();
-
-    if (files.isEmpty) {
-      myLog.i(
-          "startBackup - returned files is empty, start create new file for backup data");
-      await createSpreadsheet();
-      return;
-    } else {
-      myLog.i(
-          "startBackup - returned files is not empty, start edit first index file");
-
-      final file = files.first;
-      final id = file.id;
-      if (id == null) {
-        myLog.i(
-            "startBackup - returned id is null, can't update the file with new data");
-        return;
-      }
-      await editSpreadSheet(id: id);
-    }
   }
 }

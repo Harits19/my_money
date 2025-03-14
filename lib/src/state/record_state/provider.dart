@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_money/src/services/csv_service.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/file_service.dart';
+import 'package:my_money/src/services/google_sheet_service.dart';
 import 'package:my_money/src/services/local_storage_service.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/model.dart';
@@ -60,6 +61,32 @@ class _RecordProviderState extends State<RecordProvider> {
     setState(() {});
   }
 
+  void startBackup() async {
+    final files = await GoogleSheetService.getAllSpreadSheetFiles();
+
+    if (files.isEmpty) {
+      myLog.i(
+          "startBackup - returned files is empty, start create new file for backup data");
+      await GoogleSheetService.createSpreadsheet();
+      return;
+    } else {
+      myLog.i(
+          "startBackup - returned files is not empty, start edit first index file");
+
+      final file = files.first;
+      final id = file.id;
+      if (id == null) {
+        myLog.i(
+            "startBackup - returned id is null, can't update the file with new data");
+        return;
+      }
+      await GoogleSheetService.editSpreadSheet(
+        id: id,
+        list: records,
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -69,6 +96,7 @@ class _RecordProviderState extends State<RecordProvider> {
   @override
   Widget build(BuildContext context) {
     return RecordState(
+      startBackup: startBackup,
       deleteAllRecords: deleteAllRecords,
       records: records,
       importCSV: importCSV,

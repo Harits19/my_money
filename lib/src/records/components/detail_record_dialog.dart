@@ -17,7 +17,7 @@ class DetailRecordDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final idr = CurrencyUtil.toIdr(20000);
-    final formattedDate = DateUtil.format3(DateTime.now());
+    final formattedDate = DateTime.now().format3();
     const account = "Cash";
 
     handleDelete() async {

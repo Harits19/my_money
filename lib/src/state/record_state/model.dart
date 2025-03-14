@@ -1,30 +1,36 @@
 import 'package:intl/intl.dart';
 import 'package:my_money/src/services/debug_service.dart';
+import 'package:my_money/src/services/google_sheet_service.dart';
+import 'package:my_money/src/util/date_util.dart';
 
 enum RecordType {
   expense,
   income;
 
-  static RecordType fromCSVString(String value) {
+  static const incomeString = '(+) Income';
+  static const expenseString = '(-) Expense';
+
+  static RecordType fromString(String value) {
     switch (value.trim()) {
-      case '(-) Expense':
+      case expenseString:
         return RecordType.expense;
       default:
         return RecordType.income;
     }
   }
 
-  static RecordType fromString(String value) {
-    switch (value) {
-      case "expense":
-        return RecordType.expense;
+  @override
+  String toString() {
+    switch (this) {
+      case RecordType.expense:
+        return expenseString;
       default:
-        return RecordType.income;
+        return incomeString;
     }
   }
 }
 
-class RecordModel {
+class RecordModel implements SheetModel {
   final DateTime time;
   final RecordType type;
   final num amount;
@@ -43,7 +49,7 @@ class RecordModel {
   Map<String, dynamic> toJson() {
     return {
       "time": time.toString(),
-      "type": type.name,
+      "type": type.toString(),
       "amount": amount,
       "category": category,
       "account": account,
@@ -73,7 +79,7 @@ class RecordModel {
         final dateTime = format.tryParse("${item[0]},${item[1]}");
         return RecordModel(
           time: dateTime ?? DateTime.now(),
-          type: RecordType.fromCSVString(item[2]),
+          type: RecordType.fromString(item[2]),
           amount: num.tryParse(item[3]) ?? 0,
           category: item[4],
           account: item[5],
@@ -101,5 +107,17 @@ class RecordModel {
 
   static List<RecordModel> fromJsonList(List<dynamic> json) {
     return json.map((item) => RecordModel.fromJson(item)).toList();
+  }
+
+  @override
+  List<String> toListString() {
+    return [
+      time.format3(),
+      type.toString(),
+      amount.toString(),
+      category,
+      account,
+      notes,
+    ];
   }
 }
