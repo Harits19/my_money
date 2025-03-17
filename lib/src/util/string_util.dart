@@ -5,3 +5,9 @@ extension ListStringExtension on List<String> {
     }).toList();
   }
 }
+
+extension StringNullExtension on String? {
+  bool get isNullEmpty {
+    return this?.isEmpty ?? true;
+  }
+}

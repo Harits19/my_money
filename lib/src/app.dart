@@ -37,10 +37,15 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     }
-    return const DateProvider(
+    return DateProvider(
       child: RecordProvider(
         child: MaterialApp(
-          home: HomeView(),
+          theme: ThemeData(
+            inputDecorationTheme: const InputDecorationTheme(
+              border: OutlineInputBorder(),
+            ),
+          ),
+          home: const HomeView(),
         ),
       ),
     );

@@ -13,6 +13,7 @@ class RecordState extends InheritedWidget {
     required this.deleteAllRecords,
     required this.syncWithGoogleSpreadsheet,
     required this.isLoading,
+    required this.addRecord,
     this.spreadsheetId = "",
   });
 
@@ -20,6 +21,7 @@ class RecordState extends InheritedWidget {
   final DateTime selectedDate;
   final VoidCallback importCSV;
   final VoidCallback deleteAllRecords;
+  final ValueChanged<RecordModel> addRecord;
   final VoidCallback syncWithGoogleSpreadsheet;
   final bool isLoading;
   final String spreadsheetId;
@@ -42,8 +44,7 @@ class RecordState extends InheritedWidget {
     return result;
   }
 
-
-    List<String> get notes {
+  List<String> get notes {
     final result = records.map((item) => item.notes).toSet().toList();
 
     return result;

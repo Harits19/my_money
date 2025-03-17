@@ -116,6 +116,12 @@ class _RecordProviderState extends State<RecordProvider> {
     setState(() {});
   }
 
+  void addRecord(RecordModel newValue) {
+    records = [...records, newValue];
+
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -127,6 +133,7 @@ class _RecordProviderState extends State<RecordProvider> {
     return RecordState(
       spreadsheetId: spreadsheetId ?? '',
       isLoading: isLoading,
+      addRecord: addRecord,
       syncWithGoogleSpreadsheet: startSync,
       deleteAllRecords: deleteAllRecords,
       records: records,

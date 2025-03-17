@@ -9,6 +9,8 @@ class MyAutoComplete extends StatelessWidget {
     this.decoration,
     this.maxLines,
     this.textInputType,
+    this.validator,
+    this.initialValue,
   });
 
   final List<String> options;
@@ -16,29 +18,35 @@ class MyAutoComplete extends StatelessWidget {
   final InputDecoration? decoration;
   final TextInputType? textInputType;
   final int? maxLines;
+  final FormFieldValidator<String>? validator;
+  final TextEditingValue? initialValue;
 
   @override
   Widget build(BuildContext context) {
     return Autocomplete<String>(
       optionsViewOpenDirection: OptionsViewOpenDirection.down,
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text.isEmpty) {
+      optionsBuilder: (textEditingValue) {
+        final value = textEditingValue.text;
+        if (value.isNullEmpty) {
           return options;
         }
-        return options.search(textEditingValue.text);
+        return options.search(value);
       },
-      fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) =>
-          TextFormField(
-        keyboardType: textInputType,
-        onChanged: onChanged,
-        controller: controller,
-        focusNode: focusNode,
-        decoration: decoration,
-        maxLines: maxLines,
-        onFieldSubmitted: (String value) {
-          onFieldSubmitted();
-        },
-      ),
+      initialValue: initialValue,
+      fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+        return TextFormField(
+          keyboardType: textInputType,
+          controller: controller,
+          onChanged: onChanged,
+          focusNode: focusNode,
+          decoration: decoration,
+          validator: validator,
+          maxLines: maxLines,
+          onFieldSubmitted: (String value) {
+            onFieldSubmitted();
+          },
+        );
+      },
       onSelected: (String selection) {
         onChanged?.call(selection);
       },

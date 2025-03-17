@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
@@ -14,5 +15,10 @@ extension DateTimeExtension on DateTime {
   /// eg. Sep 30, 2024 9:38 PM
   String format3() {
     return DateFormat("MMM dd, yyyy hh:mm a").format(this);
+  }
+
+  DateTime mergeWithTimeOfDay(TimeOfDay time) {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, time.hour, time.minute);
   }
 }
