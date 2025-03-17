@@ -24,6 +24,31 @@ class RecordState extends InheritedWidget {
   final bool isLoading;
   final String spreadsheetId;
 
+  List<String> get categories {
+    final result = records.map((item) => item.category).toSet().toList();
+
+    return result;
+  }
+
+  List<String> get accounts {
+    final result = records.map((item) => item.account).toSet().toList();
+
+    return result;
+  }
+
+  List<RecordType> get types {
+    final result = records.map((item) => item.type).toSet().toList();
+
+    return result;
+  }
+
+
+    List<String> get notes {
+    final result = records.map((item) => item.notes).toSet().toList();
+
+    return result;
+  }
+
   List<RecordModel> get filterByMonth {
     return records.where((item) {
       final format = DateFormat("YYYY MMM");

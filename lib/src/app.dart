@@ -28,18 +28,21 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: isLoading
-          ? const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          : const DateProvider(
-              child: RecordProvider(
-                child: HomeView(),
-              ),
-            ),
+    if (isLoading) {
+      return const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+    return const DateProvider(
+      child: RecordProvider(
+        child: MaterialApp(
+          home: HomeView(),
+        ),
+      ),
     );
   }
 }

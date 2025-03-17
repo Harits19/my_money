@@ -1,0 +1,7 @@
+extension ListStringExtension on List<String> {
+  List<String> search(String value) {
+    return where((String option) {
+      return option.toLowerCase().contains(value.toLowerCase());
+    }).toList();
+  }
+}

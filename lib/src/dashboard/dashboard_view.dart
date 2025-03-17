@@ -35,7 +35,6 @@ class _DashboardViewState extends State<DashboardView> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          Navigator.restorablePushNamed(context, AddView.routeName);
         },
       ),
       bottomNavigationBar: NavigationBar(

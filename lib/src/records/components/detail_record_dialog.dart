@@ -79,9 +79,7 @@ class DetailRecordDialog extends StatelessWidget {
                   icon: const Icon(Icons.delete),
                 ),
                 IconButton(
-                  onPressed: () {
-                    Navigator.restorablePushNamed(context, AddView.routeName);
-                  },
+                  onPressed: () {},
                   icon: const Icon(Icons.edit),
                 ),
               ],
