@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_money/src/app.dart';
 import 'package:my_money/src/services/csv_service.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/file_service.dart';
@@ -78,9 +79,10 @@ class _RecordProviderState extends State<RecordProvider> {
     final isHasInternetConnection = await hasInternet();
 
     if (!isHasInternetConnection) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      snackbarKey.currentState?.showSnackBar(
         const SnackBar(
           content: Text("No Internet Connection"),
+          duration: Duration(minutes: 5),
         ),
       );
     }
@@ -91,6 +93,13 @@ class _RecordProviderState extends State<RecordProvider> {
   void syncWithGoogleSpreadsheet() async {
     try {
       setLoading(true);
+
+      final hasInternet = await checkHasInternetConnection();
+
+      if (!hasInternet) {
+        setLoading(false);
+        return;
+      }
 
       final file = await GoogleSheetService.getSpreadsheetFile();
       final id = file?.id;

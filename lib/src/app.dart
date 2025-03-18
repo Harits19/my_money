@@ -4,6 +4,9 @@ import 'package:my_money/src/services/local_storage_service.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/provider.dart';
 
+final GlobalKey<ScaffoldMessengerState> snackbarKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 /// The Widget that configures your application.
 class MyApp extends StatefulWidget {
   const MyApp({
@@ -37,9 +40,11 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     }
+
     return DateProvider(
       child: RecordProvider(
         child: MaterialApp(
+          scaffoldMessengerKey: snackbarKey,
           theme: ThemeData(
             inputDecorationTheme: const InputDecorationTheme(
               border: OutlineInputBorder(),
