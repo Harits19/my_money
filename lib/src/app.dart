@@ -41,15 +41,21 @@ class _MyAppState extends State<MyApp> {
       );
     }
 
+    final defaultTheme = ThemeData(
+      inputDecorationTheme: const InputDecorationTheme(
+        border: OutlineInputBorder(),
+      ),
+    );
+
     return DateProvider(
       child: RecordProvider(
         child: MaterialApp(
           scaffoldMessengerKey: snackbarKey,
-          theme: ThemeData(
-            inputDecorationTheme: const InputDecorationTheme(
-              border: OutlineInputBorder(),
-            ),
+          themeMode: ThemeMode.system,
+          darkTheme: ThemeData.dark().copyWith(
+          inputDecorationTheme: defaultTheme.inputDecorationTheme,
           ),
+          theme: defaultTheme,
           home: const HomeView(),
         ),
       ),
