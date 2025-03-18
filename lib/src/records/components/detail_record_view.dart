@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_money/src/add/add_view.dart';
 import 'package:my_money/src/records/components/detail_record_dialog.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 import 'package:my_money/src/util/currency_util.dart';
@@ -35,7 +36,14 @@ class DetailRecordView extends StatelessWidget {
         children: list.map((item) {
           return ListTile(
             onTap: () {
-              DetailRecordDialog.show(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddView(
+                    initialValue: item,
+                  ),
+                ),
+              );
             },
             title: Text(
               CurrencyUtil.toIdr(item.amount),

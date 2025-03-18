@@ -145,15 +145,23 @@ class _RecordProviderState extends State<RecordProvider> {
     setState(() {});
   }
 
+  void setRecords(List<RecordModel> newRecords) {
+    newRecords.sort((a, b) => b.time.compareTo(a.time));
+    records = newRecords;
+    syncLocalStorage(newRecords);
+    setState(() {});
+  }
+
   void addRecord(RecordModel newValue) {
     final newRecords = [newValue, ...records];
-    newRecords.sort((a, b) => b.time.compareTo(a.time));
+    setRecords(newRecords);
+  }
 
-    records = newRecords;
-
-    syncLocalStorage(newRecords);
-
-    setState(() {});
+  void updateRecord(RecordModel value) {
+    final newRecords = [...records];
+    final index = newRecords.indexWhere((item) => item.id == value.id);
+    newRecords[index] = value;
+    setRecords(newRecords);
   }
 
   @override
@@ -165,6 +173,7 @@ class _RecordProviderState extends State<RecordProvider> {
   @override
   Widget build(BuildContext context) {
     return RecordState(
+      updateRecord: updateRecord,
       spreadsheetId: spreadsheetId ?? '',
       isLoading: isLoading,
       addRecord: addRecord,

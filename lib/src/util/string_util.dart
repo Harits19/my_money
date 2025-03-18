@@ -11,3 +11,5 @@ extension StringNullExtension on String? {
     return this?.isEmpty ?? true;
   }
 }
+
+String uniqueId() => DateTime.now().millisecondsSinceEpoch.toString();

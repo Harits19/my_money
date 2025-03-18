@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/google_sheet_service.dart';
 import 'package:my_money/src/util/date_util.dart';
+import 'package:my_money/src/util/string_util.dart';
 
 enum RecordType {
   expense,
@@ -37,14 +38,17 @@ class RecordModel implements SheetModel {
   final String category;
   final String account;
   final String notes;
+  final String id;
 
-  RecordModel(
-      {required this.time,
-      required this.type,
-      required this.amount,
-      required this.category,
-      required this.account,
-      required this.notes});
+  RecordModel({
+    required this.time,
+    required this.type,
+    required this.amount,
+    required this.category,
+    required this.account,
+    required this.notes,
+    required this.id,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -59,6 +63,7 @@ class RecordModel implements SheetModel {
 
   factory RecordModel.fromJson(Map<String, dynamic> json) {
     return RecordModel(
+      id: uniqueId(),
       time: DateTime.parse(json['time']),
       type: RecordType.fromString(json['type']),
       amount: json['amount'],
@@ -78,6 +83,7 @@ class RecordModel implements SheetModel {
 
         final dateTime = format.tryParse("${item[0]},${item[1]}");
         return RecordModel(
+          id: uniqueId(),
           time: dateTime ?? DateTime.now(),
           type: RecordType.fromString(item[2]),
           amount: num.tryParse(item[3]) ?? 0,

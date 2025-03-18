@@ -14,6 +14,7 @@ class RecordState extends InheritedWidget {
     required this.isLoading,
     required this.addRecord,
     this.spreadsheetId = "",
+    required this.updateRecord,
   });
 
   final List<RecordModel> records;
@@ -21,6 +22,7 @@ class RecordState extends InheritedWidget {
   final VoidCallback importCSV;
   final VoidCallback deleteAllRecords;
   final ValueChanged<RecordModel> addRecord;
+  final void Function(RecordModel) updateRecord;
   final VoidCallback syncWithGoogleSpreadsheet;
   final bool isLoading;
   final String spreadsheetId;

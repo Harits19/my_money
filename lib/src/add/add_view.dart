@@ -30,6 +30,7 @@ class _AddViewState extends State<AddView> {
       recordModel?.category ?? recordState.categories.lastOrNull;
   late var account = recordModel?.account ?? recordState.accounts.lastOrNull;
   late var notes = recordModel?.notes;
+  late var isUpdateFlow = widget.initialValue != null;
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +191,14 @@ class _AddViewState extends State<AddView> {
                       return;
                     }
 
+                    final id = recordModel?.id;
+
+                    if (id == null) {
+                      return;
+                    }
+
                     final newRecord = RecordModel(
+                      id: id,
                       time: time,
                       type: type,
                       amount: amount!,
@@ -198,8 +206,11 @@ class _AddViewState extends State<AddView> {
                       account: account!,
                       notes: notes!,
                     );
-
-                    recordState.addRecord(newRecord);
+                    if (isUpdateFlow) {
+                      recordState.updateRecord(newRecord);
+                    } else {
+                      recordState.addRecord(newRecord);
+                    }
                     Navigator.pop(context);
                   },
                   child: const Text("SAVE"),
