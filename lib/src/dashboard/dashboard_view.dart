@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_money/src/add/add_view.dart';
 import 'package:my_money/src/components/height.dart';
 import 'package:my_money/src/dashboard/dashboard_constan.dart';
 import 'package:my_money/src/dashboard/component/date_view.dart';

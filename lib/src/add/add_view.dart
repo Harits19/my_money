@@ -7,7 +7,12 @@ import 'package:my_money/src/util/date_util.dart';
 import 'package:my_money/src/util/string_util.dart';
 
 class AddView extends StatefulWidget {
-  const AddView({super.key});
+  const AddView({
+    super.key,
+    this.initialValue,
+  });
+
+  final RecordModel? initialValue;
 
   @override
   State<AddView> createState() => _AddViewState();
@@ -16,13 +21,15 @@ class AddView extends StatefulWidget {
 class _AddViewState extends State<AddView> {
   final _formKey = GlobalKey<FormState>();
   late final recordState = RecordState.of(context);
+  late final recordModel = widget.initialValue;
 
-  var time = DateTime.now();
-  var type = RecordType.expense;
-  num? amount;
-  late var category = recordState.categories.lastOrNull;
-  late var account = recordState.accounts.lastOrNull;
-  String? notes;
+  late var time = recordModel?.time ?? DateTime.now();
+  late var type = recordModel?.type ?? RecordType.expense;
+  late var amount = recordModel?.amount;
+  late var category =
+      recordModel?.category ?? recordState.categories.lastOrNull;
+  late var account = recordModel?.account ?? recordState.accounts.lastOrNull;
+  late var notes = recordModel?.notes;
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +55,16 @@ class _AddViewState extends State<AddView> {
                   padding: const EdgeInsets.all(16),
                   children: [
                     TextFormField(
+                      initialValue: amount?.toString(),
                       validator: defaultValidator,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         label: Text("Amount"),
                       ),
+                      onChanged: (value) {
+                        amount = num.tryParse(value);
+                        setState(() {});
+                      },
                     ),
                     const SizedBox(
                       height: 16,
@@ -82,7 +94,7 @@ class _AddViewState extends State<AddView> {
                       child: InputDecorator(
                         decoration: const InputDecoration(),
                         child: Text(
-                          time.toString(),
+                          time.format4(),
                           style: TextTheme.of(context).bodyLarge,
                         ),
                       ),
@@ -100,7 +112,8 @@ class _AddViewState extends State<AddView> {
                         label: Text("Category"),
                       ),
                       onChanged: (value) {
-                        myLog.i("new value $value");
+                        category = value;
+                        setState(() {});
                       },
                     ),
                     const SizedBox(
@@ -116,7 +129,8 @@ class _AddViewState extends State<AddView> {
                         label: Text("Account"),
                       ),
                       onChanged: (value) {
-                        myLog.i("new value $value");
+                        account = value;
+                        setState(() {});
                       },
                     ),
                     const SizedBox(
@@ -146,6 +160,10 @@ class _AddViewState extends State<AddView> {
                       height: 16,
                     ),
                     MyAutoComplete(
+                      validator: defaultValidator,
+                      initialValue: TextEditingValue(
+                        text: notes ?? '',
+                      ),
                       options: recordState.notes,
                       textInputType: TextInputType.multiline,
                       maxLines: 2,
@@ -154,6 +172,10 @@ class _AddViewState extends State<AddView> {
                           "Notes",
                         ),
                       ),
+                      onChanged: (value) {
+                        notes = value;
+                        setState(() {});
+                      },
                     ),
                   ],
                 ),
@@ -164,11 +186,21 @@ class _AddViewState extends State<AddView> {
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 child: FilledButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
+                    if (!_formKey.currentState!.validate()) {
+                      return;
                     }
+
+                    final newRecord = RecordModel(
+                      time: time,
+                      type: type,
+                      amount: amount!,
+                      category: category!,
+                      account: account!,
+                      notes: notes!,
+                    );
+
+                    recordState.addRecord(newRecord);
+                    Navigator.pop(context);
                   },
                   child: const Text("SAVE"),
                 ),

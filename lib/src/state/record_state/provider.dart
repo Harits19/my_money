@@ -33,7 +33,7 @@ class _RecordProviderState extends State<RecordProvider> {
     final list = await CsvService.readFromFile(file);
     if (list == null) return;
 
-    final parsedList = RecordModel.fromCSV(list).reversed.toList();
+    final parsedList = RecordModel.fromCSV(list).toList();
     records = parsedList;
     setState(() {});
 
@@ -117,7 +117,10 @@ class _RecordProviderState extends State<RecordProvider> {
   }
 
   void addRecord(RecordModel newValue) {
-    records = [...records, newValue];
+    final newRecords = [newValue, ...records];
+    newRecords.sort((a, b) => b.time.compareTo(a.time));
+
+    records = newRecords;
 
     setState(() {});
   }

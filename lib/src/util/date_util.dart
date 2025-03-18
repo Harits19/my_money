@@ -9,7 +9,7 @@ extension DateTimeExtension on DateTime {
 
   /// eg. Sep 30, Monday
   String format2() {
-    return DateFormat("EEEE, dd MMM yyyy").format(this);
+    return DateFormat("MMM dd, EEEE").format(this);
   }
 
   /// eg. Sep 30, 2024 9:38 PM
@@ -17,8 +17,12 @@ extension DateTimeExtension on DateTime {
     return DateFormat("MMM dd, yyyy hh:mm a").format(this);
   }
 
+  /// eg. 30 Sep 2024 | 9:38 PM
+  String format4() {
+    return DateFormat("dd MMM yyyy | hh:mm a").format(this);
+  }
+
   DateTime mergeWithTimeOfDay(TimeOfDay time) {
-    final now = DateTime.now();
-    return DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    return DateTime(year, month, day, time.hour, time.minute);
   }
 }
