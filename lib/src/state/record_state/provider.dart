@@ -7,6 +7,7 @@ import 'package:my_money/src/services/local_storage_service.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 import 'package:my_money/src/state/record_state/state.dart';
+import 'package:my_money/src/util/network_util.dart';
 
 class RecordProvider extends StatefulWidget {
   const RecordProvider({
@@ -23,6 +24,7 @@ class RecordProvider extends StatefulWidget {
 class _RecordProviderState extends State<RecordProvider> {
   List<RecordModel> records = [];
   bool isLoading = false;
+  bool isLoadingPref = true;
   String? spreadsheetId;
 
   void importCSV() async {
@@ -37,7 +39,11 @@ class _RecordProviderState extends State<RecordProvider> {
     records = parsedList;
     setState(() {});
 
-    final listJson = RecordModel.toJsonList(parsedList);
+    syncLocalStorage(parsedList);
+  }
+
+  void syncLocalStorage(List<RecordModel> list) {
+    final listJson = RecordModel.toJsonList(list);
 
     LocalStorageService.setValue(LocalStorageKey.records, listJson);
   }
@@ -68,7 +74,21 @@ class _RecordProviderState extends State<RecordProvider> {
     setState(() {});
   }
 
-  void startSync() async {
+  Future<bool> checkHasInternetConnection() async {
+    final isHasInternetConnection = await hasInternet();
+
+    if (!isHasInternetConnection) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("No Internet Connection"),
+        ),
+      );
+    }
+
+    return isHasInternetConnection;
+  }
+
+  void syncWithGoogleSpreadsheet() async {
     try {
       setLoading(true);
 
@@ -122,6 +142,8 @@ class _RecordProviderState extends State<RecordProvider> {
 
     records = newRecords;
 
+    syncLocalStorage(newRecords);
+
     setState(() {});
   }
 
@@ -137,7 +159,7 @@ class _RecordProviderState extends State<RecordProvider> {
       spreadsheetId: spreadsheetId ?? '',
       isLoading: isLoading,
       addRecord: addRecord,
-      syncWithGoogleSpreadsheet: startSync,
+      syncWithGoogleSpreadsheet: syncWithGoogleSpreadsheet,
       deleteAllRecords: deleteAllRecords,
       records: records,
       importCSV: importCSV,
