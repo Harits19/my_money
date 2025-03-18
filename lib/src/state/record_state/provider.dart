@@ -164,6 +164,13 @@ class _RecordProviderState extends State<RecordProvider> {
     setRecords(newRecords);
   }
 
+  void deleteRecord(RecordModel value) {
+    final newRecords = [...records];
+    final index = newRecords.indexWhere((item) => item.id == value.id);
+    newRecords.removeAt(index);
+    setRecords(newRecords);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -173,6 +180,7 @@ class _RecordProviderState extends State<RecordProvider> {
   @override
   Widget build(BuildContext context) {
     return RecordState(
+      deleteRecord: deleteRecord,
       updateRecord: updateRecord,
       spreadsheetId: spreadsheetId ?? '',
       isLoading: isLoading,
