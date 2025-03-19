@@ -20,8 +20,9 @@ class NotificationService {
     myLog.i("onDidReceiveBackgroundNotificationResponse - $details");
   }
 
-  static init() async {
+  static Future<void> init() async {
     try {
+      myLog.i("NotificationService.init start initialize notification service");
       const androidInitializationSettings =
           AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -52,7 +53,7 @@ class NotificationService {
 
   static void showNotification({
     required String title,
-    required String body,
+    String? body,
   }) async {
     try {
       const AndroidNotificationDetails androidDetails =
@@ -137,8 +138,8 @@ class NotificationService {
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
         dailyNotif, // Notification ID
-        'Scheduled Notification', // Title
-        'This notification will appear in 5 seconds.', // Body
+        "Don't forget to record your expenses.", // Title
+        null, //
         parsedTime,
         platformDetails,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,

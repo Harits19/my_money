@@ -22,8 +22,13 @@ class _MyAppState extends State<MyApp> {
   bool isLoading = true;
 
   void init() async {
+    await NotificationService.init();
+    await NotificationService.scheduleAllTime();
     await LocalStorageService.initPrefs();
     await NotificationService.requestPermission();
+    await Future.delayed(const Duration(
+      seconds: 5,
+    ));
     isLoading = false;
     setState(() {});
   }
@@ -37,8 +42,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const MaterialApp(
-        home: Scaffold(
+      return MaterialApp(
+        themeMode: ThemeMode.system,
+        darkTheme: ThemeData.dark(),
+        home: const Scaffold(
           body: Center(
             child: CircularProgressIndicator(),
           ),

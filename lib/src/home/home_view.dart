@@ -71,8 +71,7 @@ class _HomeViewState extends State<HomeView> {
           IconButton(
             onPressed: () {
               NotificationService.showNotification(
-                title: "Test Notification",
-                body: "This is a simple notification",
+                title: "Don't forget to record your expenses.",
               );
             },
             icon: const Icon(Icons.notification_add),
