@@ -63,15 +63,20 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           IconButton(
-              onPressed: () {
-                // NotificationService.showNotification(
-                //   title: "Test Notification",
-                //   body: "This is a simple notification",
-                // );
-
-                NotificationService.scheduleNotification();
-              },
-              icon: const Icon(Icons.notification_add))
+            onPressed: () {
+              NotificationService.scheduleAllTime();
+            },
+            icon: const Icon(Icons.notification_add),
+          ),
+          IconButton(
+            onPressed: () {
+              NotificationService.showNotification(
+                title: "Test Notification",
+                body: "This is a simple notification",
+              );
+            },
+            icon: const Icon(Icons.notification_add),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

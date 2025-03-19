@@ -22,6 +22,11 @@ extension DateTimeExtension on DateTime {
     return DateFormat("dd MMM yyyy | hh:mm a").format(this);
   }
 
+  /// eg. 30 Sep 2024 | 22:38
+  String format5() {
+    return DateFormat("dd MMM yyyy | HH:mm").format(this);
+  }
+
   DateTime mergeWithTimeOfDay(TimeOfDay time) {
     return DateTime(year, month, day, time.hour, time.minute);
   }
