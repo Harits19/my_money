@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_money/src/home/home_view.dart';
 import 'package:my_money/src/services/local_storage_service.dart';
 import 'package:my_money/src/services/notification_service.dart';
+import 'package:my_money/src/splash/splash_view.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/provider.dart';
 
@@ -41,18 +42,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return MaterialApp(
-        themeMode: ThemeMode.system,
-        darkTheme: ThemeData.dark(),
-        home: const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      );
-    }
-
     final defaultTheme = ThemeData(
       inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(),
@@ -68,7 +57,7 @@ class _MyAppState extends State<MyApp> {
             inputDecorationTheme: defaultTheme.inputDecorationTheme,
           ),
           theme: defaultTheme,
-          home: const HomeView(),
+          home: isLoading ? const SplashView() : const HomeView(),
         ),
       ),
     );
