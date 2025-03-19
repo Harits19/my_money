@@ -54,7 +54,7 @@ class RecordModel implements SheetModel {
     return {
       "time": time.toString(),
       "type": type.toString(),
-      "amount": amount,
+      "amount": amount.toInt(),
       "category": category,
       "account": account,
       "notes": notes,
@@ -66,7 +66,7 @@ class RecordModel implements SheetModel {
       id: uniqueId(),
       time: DateTime.parse(json['time']),
       type: RecordType.fromString(json['type']),
-      amount: json['amount'],
+      amount: (json['amount'] as num).toInt(),
       category: json['category'],
       account: json['account'],
       notes: json['notes'],

@@ -12,4 +12,9 @@ extension StringNullExtension on String? {
   }
 }
 
-String uniqueId() => DateTime.now().millisecondsSinceEpoch.toString();
+var index = 0;
+
+String uniqueId() {
+  index++;
+  return index.toString();
+}

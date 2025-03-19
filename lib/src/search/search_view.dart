@@ -1,54 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:my_money/src/components/detail_record_item_view.dart';
+import 'package:my_money/src/state/record_state/state.dart';
 
-class SearchView extends StatelessWidget {
+class SearchView extends StatefulWidget {
   const SearchView({super.key});
 
-  static const routeName = '/search';
+  @override
+  State<SearchView> createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<SearchView> {
+  String search = '';
 
   @override
   Widget build(BuildContext context) {
-    const items = [];
-    const noMatchFound = false;
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: "Search for records",
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: "Search",
                 ),
+                onChanged: (value) {
+                  search = value;
+                  setState(() {});
+                },
               ),
-              const SizedBox(
-                height: 16,
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView(
+                children: [
+                  ...RecordState.of(context).search(search).map(
+                        (item) => DetailRecordItemView(item: item),
+                      ),
+                ],
               ),
-              noMatchFound ? const Text("No match founde") : const SizedBox(),
-              items.isEmpty
-                  ? const Expanded(
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.manage_search_rounded,
-                              size: 80,
-                            ),
-                            Text(
-                                "Search records by notes, category name or account name"),
-                          ],
-                        ),
-                      ),
-                    )
-                  : Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: const [],
-                      ),
-                    ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

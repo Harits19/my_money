@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_money/src/state/record_state/model.dart';
@@ -59,6 +61,16 @@ class RecordState extends InheritedWidget {
       final format = DateFormat("YYYY MMM");
       return format.format(item.time) == format.format(selectedDate);
     }).toList();
+  }
+
+  List<RecordModel> search(String search) {
+    return filterByMonth.where(
+      (element) {
+        final stringValue = jsonEncode(element.toJson()).toLowerCase();
+        final searchValue = search.toLowerCase();
+        return stringValue.contains(searchValue);
+      },
+    ).toList();
   }
 
   static RecordState? maybeOf(BuildContext context) {

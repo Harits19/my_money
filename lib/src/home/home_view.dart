@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_money/src/add/add_view.dart';
 import 'package:my_money/src/home/home_constant.dart';
 import 'package:my_money/src/records/records_view.dart';
+import 'package:my_money/src/search/search_view.dart';
+import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/setting/setting_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -42,6 +44,24 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Money"),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchView(),
+                ),
+              );
+              if (result is! String) return;
+
+              myLog.i("search result $result");
+            },
+            icon: const Icon(
+              Icons.search,
+            ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
