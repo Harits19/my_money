@@ -63,6 +63,12 @@ class RecordState extends InheritedWidget {
     }).toList();
   }
 
+  num get totalCurrentMonth {
+    return filterByMonth.fold(0, (prev, current) {
+      return prev + current.amount.toInt();
+    });
+  }
+
   List<RecordModel> search(String search) {
     return filterByMonth.where(
       (element) {
@@ -87,6 +93,7 @@ class RecordState extends InheritedWidget {
   bool updateShouldNotify(RecordState oldWidget) {
     return oldWidget.records != records ||
         oldWidget.isLoading != isLoading ||
-        oldWidget.spreadsheetId != spreadsheetId;
+        oldWidget.spreadsheetId != spreadsheetId ||
+        oldWidget.selectedDate != selectedDate;
   }
 }

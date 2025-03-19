@@ -48,7 +48,7 @@ class DetailRecordItemView extends StatelessWidget {
         );
       },
       title: Text(
-        CurrencyUtil.toIdr(item.amount),
+        item.amount.toIdr(),
         style: const TextStyle(
           fontWeight: FontWeight.w600,
         ),

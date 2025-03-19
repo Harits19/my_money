@@ -138,8 +138,8 @@ class NotificationService {
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
         dailyNotif, // Notification ID
-        "Don't forget to record your expenses.", // Title
-        null, //
+        "Add expenses", // Title
+        "Remember to add your expenses today", //
         parsedTime,
         platformDetails,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,

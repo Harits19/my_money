@@ -1,13 +1,13 @@
 import 'package:intl/intl.dart';
 
-class CurrencyUtil {
-  static String toIdr(num? value) {
+extension NumExtension on num {
+  String toIdr() {
     final formatter = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp ',
       decimalDigits: 0,
     );
 
-    return formatter.format((value ?? 0));
+    return formatter.format((this));
   }
 }

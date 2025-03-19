@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/add/add_view.dart';
+import 'package:my_money/src/app_bar/app_bar_view.dart';
 import 'package:my_money/src/home/home_constant.dart';
+import 'package:my_money/src/month/month_view.dart';
 import 'package:my_money/src/records/records_view.dart';
 import 'package:my_money/src/search/search_view.dart';
 import 'package:my_money/src/services/debug_service.dart';
@@ -29,55 +31,14 @@ class _HomeViewState extends State<HomeView> {
       ),
       NavigationBarModel(
         destination: const NavigationDestination(
-          icon: Icon(Icons.category),
-          label: 'Category',
-        ),
-        view: const Placeholder(),
-      ),
-      NavigationBarModel(
-        destination: const NavigationDestination(
           icon: Icon(Icons.settings),
           label: 'Setting',
         ),
         view: const SettingView(),
       ),
     ];
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Money"),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              final result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SearchView(),
-                ),
-              );
-              if (result is! String) return;
 
-              myLog.i("search result $result");
-            },
-            icon: const Icon(
-              Icons.search,
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              NotificationService.scheduleAllTime();
-            },
-            icon: const Icon(Icons.notification_add),
-          ),
-          IconButton(
-            onPressed: () {
-              NotificationService.showNotification(
-                title: "Don't forget to record your expenses.",
-              );
-            },
-            icon: const Icon(Icons.notification_add),
-          ),
-        ],
-      ),
+    return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -99,7 +60,19 @@ class _HomeViewState extends State<HomeView> {
           return item.destination;
         }).toList(),
       ),
-      body: SafeArea(child: listMenu[selectedBottomBar].view),
+      body: CustomScrollView(
+        slivers: [
+          const AppBarView(),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return listMenu[selectedBottomBar].view;
+              },
+              childCount: 1, // Total number of list items
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

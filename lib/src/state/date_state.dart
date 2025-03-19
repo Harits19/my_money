@@ -24,7 +24,7 @@ class DateState extends InheritedWidget {
 
   @override
   bool updateShouldNotify(DateState oldWidget) {
-    return oldWidget.date != date;
+    return true;
   }
 }
 

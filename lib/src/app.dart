@@ -48,6 +48,12 @@ class _MyAppState extends State<MyApp> {
       ),
     );
 
+    if (isLoading) {
+      return const MaterialApp(
+        home: SplashView(),
+      );
+    }
+
     return DateProvider(
       child: RecordProvider(
         child: MaterialApp(

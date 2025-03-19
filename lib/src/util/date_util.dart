@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 extension DateTimeExtension on DateTime {
   /// eg. September, 2024
   String format1() {
-    return DateFormat("MMMM, yyyy").format(this);
+    return DateFormat("MMMM yyyy").format(this);
   }
 
   /// eg. Sep 30, Monday
