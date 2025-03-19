@@ -12,7 +12,7 @@ class MonthView extends StatelessWidget {
     final selectedDate = dateProvider.date;
 
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: ListTile(
         trailing: IconButton(
           onPressed: () {

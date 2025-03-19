@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
     await LocalStorageService.initPrefs();
     await NotificationService.requestPermission();
     await Future.delayed(const Duration(
-      seconds: 5,
+      seconds: 1,
     ));
     isLoading = false;
     setState(() {});
