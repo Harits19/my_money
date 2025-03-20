@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_money/src/add/add_view.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 import 'package:my_money/src/state/record_state/state.dart';
-import 'package:my_money/src/util/currency_util.dart';
+import 'package:my_money/src/util/num_util.dart';
 
 class DetailRecordItemView extends StatelessWidget {
   const DetailRecordItemView({super.key, required this.item});

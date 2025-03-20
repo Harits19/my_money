@@ -43,7 +43,7 @@ class _AddViewState extends State<AddView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Record"),
+        title: Text(isUpdateFlow ? "Edit Record" : "Add Record"),
       ),
       body: SafeArea(
         child: Form(

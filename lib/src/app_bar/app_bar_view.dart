@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_money/src/month/month_view.dart';
 import 'package:my_money/src/search/search_view.dart';
 import 'package:my_money/src/state/record_state/state.dart';
-import 'package:my_money/src/util/currency_util.dart';
+import 'package:my_money/src/util/num_util.dart';
 
 class AppBarView extends StatelessWidget {
   const AppBarView({super.key});

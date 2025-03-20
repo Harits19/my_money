@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_money/src/model/tuple.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 
 class RecordState extends InheritedWidget {
@@ -63,7 +64,7 @@ class RecordState extends InheritedWidget {
     }).toList();
   }
 
-  num get totalCurrentMonth {
+  int get totalCurrentMonth {
     return filterByMonth.fold(0, (prev, current) {
       return prev + current.amount.toInt();
     });
@@ -79,38 +80,57 @@ class RecordState extends InheritedWidget {
     ).toList();
   }
 
-  Map<String, int> countTotalByKey({
-    required String Function(RecordModel item) key,
+  List<RecordModel> filterByKey({
+    required String key,
+    required RecordModelKey modelKey,
   }) {
-    final uniqueList = filterByMonth.map((e) => key(e)).toList();
+    return filterByMonth.where(
+      (element) {
+        return modelKey(element) == key;
+      },
+    ).toList();
+  }
+
+  Map<String, int> countTotalByKey({
+    required RecordModelKey modelKey,
+  }) {
+    final uniqueList = filterByMonth.map((e) => modelKey(e)).toSet().toList();
 
     final Map<String, int> result = {};
 
     for (final item in uniqueList) {
-      final total = filterByMonth.fold(
+      final filterListByKey = filterByKey(key: item, modelKey: modelKey);
+
+      final total = filterListByKey.fold(
         0,
         (previousValue, element) {
-          if (key(element) != item) return previousValue;
           return previousValue + element.amount;
         },
       );
       result[item] = total;
     }
-
     return result;
   }
 
-  Map<String, Map<String, int>> get analysisResult {
+  Map<String, Tuple2<Map<String, int>, RecordModelKey>> get analysisResult {
+    String valueKeyCategory(RecordModel item) {
+      return item.category;
+    }
+
+    String valueKeyAccount(RecordModel item) {
+      return item.account;
+    }
+
     final totalCategories = countTotalByKey(
-      key: (item) => item.category,
+      modelKey: valueKeyCategory,
     );
     final totalAccounts = countTotalByKey(
-      key: (item) => item.account,
+      modelKey: valueKeyAccount,
     );
 
     return {
-      "categories": totalCategories,
-      "accounts": totalAccounts,
+      "categories": Tuple2(totalCategories, valueKeyCategory),
+      "accounts": Tuple2(totalAccounts, valueKeyAccount),
     };
   }
 

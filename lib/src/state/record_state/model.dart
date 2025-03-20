@@ -131,3 +131,5 @@ class RecordModel implements SheetModel {
     return ["TIME", "TYPE", "AMOUNT", "CATEGORY", "ACCOUNT", "NOTES"];
   }
 }
+
+typedef RecordModelKey = String Function(RecordModel item);

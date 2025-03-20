@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/components/height.dart';
-import 'package:my_money/src/util/currency_util.dart';
+import 'package:my_money/src/util/num_util.dart';
 import 'package:my_money/src/util/date_util.dart';
 
 class DetailRecordDialog extends StatelessWidget {

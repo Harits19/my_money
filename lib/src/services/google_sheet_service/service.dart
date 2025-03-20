@@ -2,7 +2,7 @@ import 'package:googleapis/drive/v2.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/google_service.dart';
-import 'package:my_money/src/util/int_util.dart';
+import 'package:my_money/src/util/num_util.dart';
 part 'model.dart';
 
 class GoogleSheetService {
