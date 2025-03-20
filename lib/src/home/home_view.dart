@@ -3,6 +3,7 @@ import 'package:my_money/src/add/add_view.dart';
 import 'package:my_money/src/analysis/analysis_view.dart';
 import 'package:my_money/src/app_bar/app_bar_view.dart';
 import 'package:my_money/src/components/floating_button_view.dart';
+import 'package:my_money/src/edit_detail/edit_detail_view.dart';
 import 'package:my_money/src/home/home_constant.dart';
 import 'package:my_money/src/records/records_view.dart';
 import 'package:my_money/src/setting/setting_view.dart';
@@ -33,6 +34,13 @@ class _HomeViewState extends State<HomeView> {
           label: 'Analysis',
         ),
         view: const AnalysisView(),
+      ),
+      NavigationBarModel(
+        destination: const NavigationDestination(
+          icon: Icon(Icons.category),
+          label: 'Category',
+        ),
+        view: const EditDetailView(),
       ),
       NavigationBarModel(
         destination: const NavigationDestination(

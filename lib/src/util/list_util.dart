@@ -22,4 +22,16 @@ extension ListExtension<T> on List<T> {
 
     return groupedList;
   }
+
+  List<T> duplicate({int total = 2}) {
+    final result = List.generate(
+      total,
+      (index) => this,
+    );
+
+    return result.fold(
+      [],
+      (previousValue, element) => [...previousValue, ...element],
+    );
+  }
 }
