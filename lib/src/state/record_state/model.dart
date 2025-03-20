@@ -35,7 +35,7 @@ class RecordModel implements SheetModel {
   final DateTime time;
   final RecordType type;
   final int amount;
-  final String category;
+  String category;
   final String account;
   final String notes;
   final String id;

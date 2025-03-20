@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_money/src/model/tuple.dart';
+import 'package:my_money/src/state/category_state/state.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 
 class RecordState extends InheritedWidget {
@@ -19,6 +20,7 @@ class RecordState extends InheritedWidget {
     this.spreadsheetId = "",
     required this.updateRecord,
     required this.deleteRecord,
+    required this.updateCategory,
   });
 
   final List<RecordModel> records;
@@ -29,6 +31,10 @@ class RecordState extends InheritedWidget {
   final ValueChanged<RecordModel> deleteRecord;
 
   final void Function(RecordModel) updateRecord;
+  final void Function({
+    required CategoryModel oldCategory,
+    required CategoryModel newCategory,
+  }) updateCategory;
   final VoidCallback syncWithGoogleSpreadsheet;
   final bool isLoading;
   final String spreadsheetId;
@@ -112,24 +118,29 @@ class RecordState extends InheritedWidget {
     return result;
   }
 
-  Map<String, Tuple2<Map<String, int>, RecordModelKey>> get analysisResult {
+  Tuple2<Map<String, int>, RecordModelKey> get categoryAnalysis {
     String valueKeyCategory(RecordModel item) {
       return item.category;
-    }
-
-    String valueKeyAccount(RecordModel item) {
-      return item.account;
     }
 
     final totalCategories = countTotalByKey(
       modelKey: valueKeyCategory,
     );
+
+    return Tuple2(totalCategories, valueKeyCategory);
+  }
+
+  Map<String, Tuple2<Map<String, int>, RecordModelKey>> get analysisResult {
+    String valueKeyAccount(RecordModel item) {
+      return item.account;
+    }
+
     final totalAccounts = countTotalByKey(
       modelKey: valueKeyAccount,
     );
 
     return {
-      "categories": Tuple2(totalCategories, valueKeyCategory),
+      "categories": categoryAnalysis,
       "accounts": Tuple2(totalAccounts, valueKeyAccount),
     };
   }

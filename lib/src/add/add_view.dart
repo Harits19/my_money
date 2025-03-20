@@ -60,7 +60,7 @@ class _AddViewState extends State<AddView> {
                       validator: defaultValidator,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        label: Text("Amount"),
+                        labelText: "Amount",
                       ),
                       onChanged: (value) {
                         amount = int.tryParse(value);
@@ -110,7 +110,7 @@ class _AddViewState extends State<AddView> {
                       validator: defaultValidator,
                       options: recordState.categories,
                       decoration: const InputDecoration(
-                        label: Text("Category"),
+                        labelText: ("Category"),
                       ),
                       onChanged: (value) {
                         category = value;
@@ -127,7 +127,7 @@ class _AddViewState extends State<AddView> {
                       validator: defaultValidator,
                       options: recordState.accounts,
                       decoration: const InputDecoration(
-                        label: Text("Account"),
+                        labelText: ("Account"),
                       ),
                       onChanged: (value) {
                         account = value;
@@ -169,9 +169,7 @@ class _AddViewState extends State<AddView> {
                       textInputType: TextInputType.multiline,
                       maxLines: 2,
                       decoration: const InputDecoration(
-                        label: Text(
-                          "Notes",
-                        ),
+                        labelText: ("Notes"),
                       ),
                       onChanged: (value) {
                         notes = value;
