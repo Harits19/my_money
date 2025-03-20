@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_money/src/add/add_view.dart';
 import 'package:my_money/src/analysis/analysis_view.dart';
 import 'package:my_money/src/app_bar/app_bar_view.dart';
+import 'package:my_money/src/components/floating_button_view.dart';
 import 'package:my_money/src/home/home_constant.dart';
-import 'package:my_money/src/month/month_view.dart';
 import 'package:my_money/src/records/records_view.dart';
-import 'package:my_money/src/search/search_view.dart';
-import 'package:my_money/src/services/debug_service.dart';
-import 'package:my_money/src/services/notification_service.dart';
 import 'package:my_money/src/setting/setting_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -47,17 +44,7 @@ class _HomeViewState extends State<HomeView> {
     ];
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddView()),
-          );
-        },
-        child: const Icon(
-          Icons.add,
-        ),
-      ),
+      floatingActionButton: const FloatingButtonView(),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedBottomBar,
         onDestinationSelected: (int index) {

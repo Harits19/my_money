@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_money/src/components/dummy_floating_button.dart';
 import 'package:my_money/src/records/components/detail_record_view.dart';
 import 'package:my_money/src/state/record_state/state.dart';
 import 'package:my_money/src/util/list_util.dart';
@@ -26,7 +27,7 @@ class RecordsView extends StatelessWidget {
               groupedTime: format.parse(item.key),
             ),
           ),
-          Opacity(opacity: 0, child: FloatingActionButton(onPressed: () {}))
+          const DummyFloatingButton(),
         ],
       ),
     );
