@@ -3,7 +3,7 @@ import 'package:my_money/src/app.dart';
 import 'package:my_money/src/services/csv_service.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/file_service.dart';
-import 'package:my_money/src/services/google_sheet_service.dart';
+import 'package:my_money/src/services/google_sheet_service/service.dart';
 import 'package:my_money/src/services/local_storage_service.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/model.dart';

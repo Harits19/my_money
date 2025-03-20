@@ -9,7 +9,7 @@ class RecordsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final format = DateFormat('yyyy-MM-dd');
+    final format = DateFormat();
     final records = RecordState.of(context).filterByMonth;
 
     final groupedRecord = records.groupBy((value) {

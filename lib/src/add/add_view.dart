@@ -63,7 +63,7 @@ class _AddViewState extends State<AddView> {
                         label: Text("Amount"),
                       ),
                       onChanged: (value) {
-                        amount = num.tryParse(value);
+                        amount = int.tryParse(value);
                         setState(() {});
                       },
                     ),

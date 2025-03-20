@@ -79,6 +79,41 @@ class RecordState extends InheritedWidget {
     ).toList();
   }
 
+  Map<String, int> countTotalByKey({
+    required String Function(RecordModel item) key,
+  }) {
+    final uniqueList = filterByMonth.map((e) => key(e)).toList();
+
+    final Map<String, int> result = {};
+
+    for (final item in uniqueList) {
+      final total = filterByMonth.fold(
+        0,
+        (previousValue, element) {
+          if (key(element) != item) return previousValue;
+          return previousValue + element.amount;
+        },
+      );
+      result[item] = total;
+    }
+
+    return result;
+  }
+
+  Map<String, Map<String, int>> get analysisResult {
+    final totalCategories = countTotalByKey(
+      key: (item) => item.category,
+    );
+    final totalAccounts = countTotalByKey(
+      key: (item) => item.account,
+    );
+
+    return {
+      "categories": totalCategories,
+      "accounts": totalAccounts,
+    };
+  }
+
   static RecordState? maybeOf(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<RecordState>();
   }

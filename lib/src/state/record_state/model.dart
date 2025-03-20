@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:my_money/src/services/debug_service.dart';
-import 'package:my_money/src/services/google_sheet_service.dart';
+import 'package:my_money/src/services/google_sheet_service/service.dart';
 import 'package:my_money/src/util/date_util.dart';
 import 'package:my_money/src/util/string_util.dart';
 
@@ -34,7 +34,7 @@ enum RecordType {
 class RecordModel implements SheetModel {
   final DateTime time;
   final RecordType type;
-  final num amount;
+  final int amount;
   final String category;
   final String account;
   final String notes;
@@ -86,7 +86,7 @@ class RecordModel implements SheetModel {
           id: uniqueId(),
           time: dateTime ?? DateTime.now(),
           type: RecordType.fromString(item[2]),
-          amount: num.tryParse(item[3]) ?? 0,
+          amount: (num.tryParse(item[3]) ?? 0).toInt(),
           category: item[4],
           account: item[5],
           notes: item[6],

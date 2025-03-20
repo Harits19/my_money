@@ -3,23 +3,7 @@ import 'package:googleapis/sheets/v4.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/google_service.dart';
 import 'package:my_money/src/util/int_util.dart';
-
-abstract class SheetModel {
-  List<String> toListString();
-  static List<String> listOfTitles() {
-    return [];
-  }
-}
-
-class _MapValueReturn<A, B> {
-  final A item1;
-  final B item2;
-
-  _MapValueReturn(
-    this.item1,
-    this.item2,
-  );
-}
+part 'model.dart';
 
 class GoogleSheetService {
   static final services = GoogleService(

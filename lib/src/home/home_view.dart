@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/add/add_view.dart';
+import 'package:my_money/src/analysis/analysis_view.dart';
 import 'package:my_money/src/app_bar/app_bar_view.dart';
 import 'package:my_money/src/home/home_constant.dart';
 import 'package:my_money/src/month/month_view.dart';
@@ -28,6 +29,13 @@ class _HomeViewState extends State<HomeView> {
           label: 'Records',
         ),
         view: const RecordsView(),
+      ),
+      NavigationBarModel(
+        destination: const NavigationDestination(
+          icon: Icon(Icons.analytics),
+          label: 'Analysis',
+        ),
+        view: const AnalysisView(),
       ),
       NavigationBarModel(
         destination: const NavigationDestination(
