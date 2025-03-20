@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:my_money/src/model/json.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/google_sheet_service/service.dart';
 import 'package:my_money/src/util/date_util.dart';
@@ -31,7 +32,7 @@ enum RecordType {
   }
 }
 
-class RecordModel implements SheetModel {
+class RecordModel implements SheetModel, JsonModel {
   final DateTime time;
   final RecordType type;
   final int amount;
@@ -50,6 +51,7 @@ class RecordModel implements SheetModel {
     required this.id,
   });
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       "time": time.toString(),
@@ -133,3 +135,4 @@ class RecordModel implements SheetModel {
 }
 
 typedef RecordModelKey = String Function(RecordModel item);
+

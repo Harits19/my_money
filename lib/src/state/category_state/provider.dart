@@ -4,23 +4,43 @@ class CategoryProvider extends StatefulWidget {
   const CategoryProvider({
     super.key,
     required this.child,
+    required this.categories,
   });
 
   final Widget child;
+  final List<String> categories;
 
   @override
   State<CategoryProvider> createState() => _CategoryProviderState();
 }
 
 class _CategoryProviderState extends State<CategoryProvider> {
-  late final recordState = RecordState.of(context);
-  late List<CategoryModel> categories = recordState.categories
+  final localStorage = LocalStorageService(key: LocalStorageKey.categories);
+  late List<CategoryModel> categories = widget.categories
       .map(
         (e) => CategoryModel(name: e, budget: 0, id: uniqueId()),
       )
       .toList();
 
+  void updateLocalStorage() {
+    localStorage.setValue(categories.toJsonList());
+  }
+
+  void getLocalStorage() {
+    final result = localStorage.getValue();
+
+    if (result is! List<dynamic>) {
+      updateLocalStorage();
+      return;
+    }
+
+    final parsedResult = CategoryModel.fromJsonList(result);
+    categories = parsedResult;
+    setState(() {});
+  }
+
   void updateCategory(CategoryModel newValue) {
+    final recordState = RecordState.of(context);
     CategoryModel? oldValue;
 
     final newArray = [...categories];
@@ -40,6 +60,13 @@ class _CategoryProviderState extends State<CategoryProvider> {
       newCategory: newValue,
       oldCategory: oldValue,
     );
+    updateLocalStorage();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getLocalStorage();
   }
 
   @override

@@ -33,7 +33,6 @@ class EditCategoryView extends StatelessWidget {
     final children = [
       TextFormField(
         validator: defaultValidator,
-        keyboardType: TextInputType.number,
         controller: name,
         decoration: const InputDecoration(
           labelText: "Name",
@@ -42,6 +41,7 @@ class EditCategoryView extends StatelessWidget {
       TextFormField(
         validator: defaultValidator,
         controller: budget,
+        keyboardType: TextInputType.number,
         decoration: const InputDecoration(
           labelText: "Budget",
         ),

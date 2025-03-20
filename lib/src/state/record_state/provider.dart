@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/app.dart';
+import 'package:my_money/src/model/json.dart';
 import 'package:my_money/src/services/csv_service.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/file_service.dart';
@@ -14,10 +15,10 @@ import 'package:my_money/src/util/network_util.dart';
 class RecordProvider extends StatefulWidget {
   const RecordProvider({
     super.key,
-    required this.child,
+    required this.builder,
   });
 
-  final Widget child;
+  final WidgetBuilder builder;
 
   @override
   State<RecordProvider> createState() => _RecordProviderState();
@@ -28,6 +29,8 @@ class _RecordProviderState extends State<RecordProvider> {
   bool isLoading = false;
   bool isLoadingPref = true;
   String? spreadsheetId;
+
+  final localStorage = LocalStorageService(key: LocalStorageKey.records);
 
   void importCSV() async {
     final file = await FileService.pickCSV();
@@ -45,13 +48,13 @@ class _RecordProviderState extends State<RecordProvider> {
   }
 
   void syncLocalStorage(List<RecordModel> list) {
-    final listJson = RecordModel.toJsonList(list);
+    final listJson = list.toJsonList();
 
-    LocalStorageService.setValue(LocalStorageKey.records, listJson);
+    localStorage.setValue(listJson);
   }
 
   void loadLocalStorage() async {
-    final localValue = LocalStorageService.getValue(LocalStorageKey.records);
+    final localValue = localStorage.getValue();
 
     if (localValue is! List<dynamic>) {
       myLog.i(
@@ -67,7 +70,7 @@ class _RecordProviderState extends State<RecordProvider> {
 
   void deleteAllRecords() {
     records = [];
-    LocalStorageService.setValue(LocalStorageKey.records, []);
+    localStorage.setValue([]);
     setState(() {});
   }
 
@@ -207,7 +210,9 @@ class _RecordProviderState extends State<RecordProvider> {
       records: records,
       importCSV: importCSV,
       selectedDate: DateState.of(context).date,
-      child: widget.child,
+      child: Builder(builder: (context) {
+        return widget.builder(context);
+      }),
     );
   }
 }

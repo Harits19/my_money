@@ -27,4 +27,13 @@ class CategoryModel extends JsonModel {
       budget: json['budget'],
     );
   }
+
+  static List<CategoryModel> fromJsonList(List<dynamic> listJson) {
+    return listJson
+        .map(
+          (e) => CategoryModel.fromJson(e),
+        )
+        .toList();
+  }
+  
 }

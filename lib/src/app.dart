@@ -6,6 +6,7 @@ import 'package:my_money/src/splash/splash_view.dart';
 import 'package:my_money/src/state/category_state/state.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/provider.dart';
+import 'package:my_money/src/state/record_state/state.dart';
 
 final GlobalKey<ScaffoldMessengerState> snackbarKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -57,7 +58,8 @@ class _MyAppState extends State<MyApp> {
 
     return DateProvider(
       child: RecordProvider(
-        child: CategoryProvider(
+        builder: (context) => CategoryProvider(
+          categories: RecordState.of(context).categories,
           child: MaterialApp(
             scaffoldMessengerKey: snackbarKey,
             themeMode: ThemeMode.system,
