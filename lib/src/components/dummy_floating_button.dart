@@ -11,7 +11,9 @@ class DummyFloatingButton extends StatelessWidget {
       child: Opacity(
         opacity: 0,
         child: IgnorePointer(
-          child: FloatingButtonView(),
+          child: FloatingButtonView(
+            heroTag: "dummy",
+          ),
         ),
       ),
     );
