@@ -59,22 +59,15 @@ class _MyAppState extends State<MyApp> {
 
     return DateProvider(
       child: RecordProvider(
-        builder: (context) {
-          final currentCategories = RecordState.of(context).categories;
-          myLog.i("current categories $currentCategories");
-          return CategoryProvider(
-            categories: currentCategories,
-            child: MaterialApp(
-              scaffoldMessengerKey: snackbarKey,
-              themeMode: ThemeMode.system,
-              darkTheme: ThemeData.dark().copyWith(
-                inputDecorationTheme: defaultTheme.inputDecorationTheme,
-              ),
-              theme: defaultTheme,
-              home: isLoading ? const SplashView() : const HomeView(),
-            ),
-          );
-        },
+        builder: (context) => MaterialApp(
+          scaffoldMessengerKey: snackbarKey,
+          themeMode: ThemeMode.system,
+          darkTheme: ThemeData.dark().copyWith(
+            inputDecorationTheme: defaultTheme.inputDecorationTheme,
+          ),
+          theme: defaultTheme,
+          home: isLoading ? const SplashView() : const HomeView(),
+        ),
       ),
     );
   }

@@ -37,13 +37,6 @@ class _HomeViewState extends State<HomeView> {
       ),
       NavigationBarModel(
         destination: const NavigationDestination(
-          icon: Icon(Icons.category),
-          label: 'Category',
-        ),
-        view: const EditDetailView(),
-      ),
-      NavigationBarModel(
-        destination: const NavigationDestination(
           icon: Icon(Icons.settings),
           label: 'Setting',
         ),
