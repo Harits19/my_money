@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_money/src/components/my_text_field.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/state/category_state/state.dart';
 import 'package:my_money/src/util/string_util.dart';
 
-class EditCategoryView extends StatelessWidget {
+class EditCategoryView extends StatefulWidget {
   const EditCategoryView({
     super.key,
     required this.item,
@@ -12,9 +13,17 @@ class EditCategoryView extends StatelessWidget {
   final CategoryModel item;
 
   @override
-  Widget build(BuildContext context) {
-    myLog.i("rebuild EditCategoryView");
+  State<EditCategoryView> createState() => _EditCategoryViewState();
+}
 
+class _EditCategoryViewState extends State<EditCategoryView> {
+  final formKey = GlobalKey<FormState>();
+
+  late var name = widget.item.name;
+  late var budget = widget.item.budget;
+
+  @override
+  Widget build(BuildContext context) {
     String? defaultValidator(String? value) {
       if (value.isNullEmpty) {
         return 'Required';
@@ -22,26 +31,27 @@ class EditCategoryView extends StatelessWidget {
       return null;
     }
 
-    final formKey = GlobalKey<FormState>();
-    final name = TextEditingController(
-      text: item.name,
-    );
-    final budget = TextEditingController(
-      text: item.budget.toString(),
-    );
-
     final children = [
-      TextFormField(
+      MyTextFormField(
         validator: defaultValidator,
-        controller: name,
+        initialValue: widget.item.name,
         decoration: const InputDecoration(
           labelText: "Name",
         ),
+        onChanged: (value) {
+          name = value;
+          setState(() {});
+        },
       ),
-      TextFormField(
+      MyTextFormField(
         validator: defaultValidator,
-        controller: budget,
+        initialValue: widget.item.budget.toString(),
         keyboardType: TextInputType.number,
+        myTextFieldType: MyTextFieldFormat.currency,
+        onChanged: (value) {
+          budget = int.tryParse(value) ?? 0;
+          setState(() {});
+        },
         decoration: const InputDecoration(
           labelText: "Budget",
         ),
@@ -64,26 +74,29 @@ class EditCategoryView extends StatelessWidget {
                 ),
               ),
               const Divider(),
-              ElevatedButton(
-                onPressed: () {
-                  if (!formKey.currentState!.validate()) {
-                    return;
-                  }
-                  final newValue = CategoryModel(
-                    name: name.text,
-                    budget: int.parse(
-                      budget.text,
-                    ),
-                    id: item.id,
-                  );
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: () {
+                    myLog.i("start save");
+                    if (!formKey.currentState!.validate()) {
+                      return;
+                    }
+                    myLog.i("after validation");
+                    final newValue = CategoryModel(
+                      name: name,
+                      budget: budget,
+                      id: widget.item.id,
+                    );
 
-                  myLog.i("category new value ${newValue.toJson()}");
+                    myLog.i("category new value ${newValue.toJson()}");
 
-                  final categoryState = CategoryState.of(context);
-                  categoryState.updateCategory(newValue);
-                  Navigator.pop(context);
-                },
-                child: const Text("Save"),
+                    final categoryState = CategoryState.of(context);
+                    categoryState.updateCategory(newValue);
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Save"),
+                ),
               )
             ],
           ),

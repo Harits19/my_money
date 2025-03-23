@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/components/my_auto_complete.dart';
+import 'package:my_money/src/components/my_text_field.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 import 'package:my_money/src/state/record_state/state.dart';
@@ -55,9 +56,10 @@ class _AddViewState extends State<AddView> {
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
-                    TextFormField(
+                    MyTextFormField(
                       initialValue: amount?.toString(),
                       validator: defaultValidator,
+                      myTextFieldType: MyTextFieldFormat.currency,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         labelText: "Amount",
@@ -191,12 +193,8 @@ class _AddViewState extends State<AddView> {
 
                     final id = recordModel?.id;
 
-                    if (id == null) {
-                      return;
-                    }
-
                     final newRecord = RecordModel(
-                      id: id,
+                      id: id ?? uniqueId(),
                       time: time,
                       type: type,
                       amount: amount!,

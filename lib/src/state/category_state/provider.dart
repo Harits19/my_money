@@ -29,10 +29,13 @@ class _CategoryProviderState extends State<CategoryProvider> {
   void getLocalStorage() {
     final result = localStorage.getValue();
 
-    if (result is! List<dynamic>) {
+    myLog.i("result categories from storage $result");
+
+    if (result is! List<dynamic> || result.isEmpty) {
       updateLocalStorage();
       return;
     }
+
 
     final parsedResult = CategoryModel.fromJsonList(result);
     categories = parsedResult;
@@ -67,6 +70,9 @@ class _CategoryProviderState extends State<CategoryProvider> {
   void initState() {
     super.initState();
     getLocalStorage();
+    myLog.i("categories ${categories.map(
+      (e) => e.toJson(),
+    )}");
   }
 
   @override

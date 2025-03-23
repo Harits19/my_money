@@ -11,7 +11,7 @@ class DetailRecordView extends StatelessWidget {
   });
 
   final List<RecordModel> list;
-  final DateTime groupedTime;
+  final String groupedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class DetailRecordView extends StatelessWidget {
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            date.format2(),
+            date,
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ),

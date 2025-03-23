@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/home/home_view.dart';
+import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/local_storage_service.dart';
 import 'package:my_money/src/services/notification_service.dart';
 import 'package:my_money/src/splash/splash_view.dart';
@@ -58,18 +59,22 @@ class _MyAppState extends State<MyApp> {
 
     return DateProvider(
       child: RecordProvider(
-        builder: (context) => CategoryProvider(
-          categories: RecordState.of(context).categories,
-          child: MaterialApp(
-            scaffoldMessengerKey: snackbarKey,
-            themeMode: ThemeMode.system,
-            darkTheme: ThemeData.dark().copyWith(
-              inputDecorationTheme: defaultTheme.inputDecorationTheme,
+        builder: (context) {
+          final currentCategories = RecordState.of(context).categories;
+          myLog.i("current categories $currentCategories");
+          return CategoryProvider(
+            categories: currentCategories,
+            child: MaterialApp(
+              scaffoldMessengerKey: snackbarKey,
+              themeMode: ThemeMode.system,
+              darkTheme: ThemeData.dark().copyWith(
+                inputDecorationTheme: defaultTheme.inputDecorationTheme,
+              ),
+              theme: defaultTheme,
+              home: isLoading ? const SplashView() : const HomeView(),
             ),
-            theme: defaultTheme,
-            home: isLoading ? const SplashView() : const HomeView(),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

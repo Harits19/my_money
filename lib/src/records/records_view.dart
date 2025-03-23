@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:my_money/src/components/dummy_floating_button.dart';
 import 'package:my_money/src/records/components/detail_record_view.dart';
 import 'package:my_money/src/state/record_state/state.dart';
+import 'package:my_money/src/util/date_util.dart';
 import 'package:my_money/src/util/list_util.dart';
 
 class RecordsView extends StatelessWidget {
@@ -10,11 +11,10 @@ class RecordsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final format = DateFormat();
     final records = RecordState.of(context).filterByMonth;
 
     final groupedRecord = records.groupBy((value) {
-      return format.format(value.time);
+      return  value.time.format1();
     });
 
     return Padding(
@@ -24,7 +24,7 @@ class RecordsView extends StatelessWidget {
           ...groupedRecord.entries.map(
             (item) => DetailRecordView(
               list: item.value,
-              groupedTime: format.parse(item.key),
+              groupedTime: item.key,
             ),
           ),
           const DummyFloatingButton(),

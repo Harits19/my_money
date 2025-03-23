@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/edit_category/edit_category_view.dart';
 import 'package:my_money/src/state/category_state/state.dart';
-import 'package:my_money/src/state/record_state/state.dart';
 
 class EditDetailView extends StatelessWidget {
   const EditDetailView({super.key});
