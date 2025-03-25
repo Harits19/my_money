@@ -7,7 +7,7 @@ part 'model.dart';
 
 class GoogleSheetService {
   static final services = GoogleService(
-      scopes: [SheetsApi.spreadsheetsScope, DriveApi.driveFileScope]);
+      scopes: [SheetsApi.driveFileScope, DriveApi.driveFileScope]);
 
   static Future<Spreadsheet> createSpreadsheet() async {
     final client = await services.authClient;
