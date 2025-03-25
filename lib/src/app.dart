@@ -50,7 +50,6 @@ class _MyAppState extends State<MyApp> {
     return DateProvider(
       child: RecordProvider(
         builder: (context) {
-          final isLoadingRecord = RecordState.of(context).isLoading;
           return MaterialApp(
             scaffoldMessengerKey: snackbarKey,
             themeMode: ThemeMode.system,
@@ -58,9 +57,7 @@ class _MyAppState extends State<MyApp> {
               inputDecorationTheme: defaultTheme.inputDecorationTheme,
             ),
             theme: defaultTheme,
-            home: isLoadingNotification || isLoadingRecord
-                ? const SplashView()
-                : const HomeView(),
+            home: isLoadingNotification ? const SplashView() : const HomeView(),
           );
         },
       ),
