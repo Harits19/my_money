@@ -23,7 +23,7 @@ class SettingView extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.input),
-          title: const Text("Sync to Google Spreadsheet"),
+          title: const Text("Push to Google Spreadsheet"),
           onTap: recordState.syncWithGoogleSpreadsheet,
         ),
         const Divider(),
