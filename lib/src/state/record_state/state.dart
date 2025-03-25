@@ -20,12 +20,13 @@ class RecordState extends InheritedWidget {
     required this.updateRecord,
     required this.deleteRecord,
     required this.updateCategory,
+    required this.changeAccount,
   });
 
   final List<RecordModel> records;
   final DateTime selectedDate;
   final VoidCallback importCSV;
-  final VoidCallback deleteAllRecords;
+  final VoidCallback deleteAllRecords, changeAccount;
   final ValueChanged<RecordModel> addRecord;
   final ValueChanged<RecordModel> deleteRecord;
 

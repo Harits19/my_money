@@ -17,9 +17,12 @@ class SettingView extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.input),
           title: const Text("Import CSV Record"),
-          onTap: () async {
-            recordState.importCSV();
-          },
+          onTap: recordState.importCSV,
+        ),
+        ListTile(
+          leading: const Icon(Icons.input),
+          title: const Text("Change Account"),
+          onTap: recordState.changeAccount,
         ),
         ListTile(
           leading: const Icon(Icons.input),

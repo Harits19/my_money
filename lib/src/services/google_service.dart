@@ -12,6 +12,10 @@ class GoogleService {
 
   AuthClient? _authClient;
 
+  AuthClient? get auth {
+    return _authClient;
+  }
+
   Future<AuthClient> get authClient async {
     if (_authClient != null) {
       myLog.i('authClient - returned current _authClient');
@@ -24,11 +28,11 @@ class GoogleService {
     return newValue;
   }
 
-  Future<AuthClient> authenticate() async {
-    final googleSignIn = GoogleSignIn(
-      scopes: scopes,
-    );
+  late final googleSignIn = GoogleSignIn(
+    scopes: scopes,
+  );
 
+  Future<AuthClient> authenticate() async {
     final googleUser = await googleSignIn.signIn();
     if (googleUser == null) {
       throw Exception("authenticate - google user is null");
@@ -62,5 +66,10 @@ class GoogleService {
     myLog.i("authenticate - success login with client ${client.toString()}");
 
     return client;
+  }
+
+  Future<void> changeAccount() async {
+    await googleSignIn.signOut();
+    await authenticate();
   }
 }

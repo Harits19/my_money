@@ -194,6 +194,10 @@ class _RecordProviderState extends State<RecordProvider> {
     setRecords(newRecords);
   }
 
+  void changeAccount() {
+    GoogleSheetService.services.changeAccount();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -205,6 +209,7 @@ class _RecordProviderState extends State<RecordProvider> {
     return RecordState(
       deleteRecord: deleteRecord,
       updateRecord: updateRecord,
+      changeAccount: changeAccount,
       updateCategory: updateCategory,
       spreadsheetId: spreadsheetId ?? '',
       isLoading: isLoading,
