@@ -13,7 +13,7 @@ class RecordState extends InheritedWidget {
     required this.importCSV,
     required this.selectedDate,
     required this.deleteAllRecords,
-    required this.syncWithGoogleSpreadsheet,
+    required this.pushToGoogleSpreadsheet,
     required this.isLoading,
     required this.addRecord,
     this.spreadsheetId = "",
@@ -35,7 +35,7 @@ class RecordState extends InheritedWidget {
     required String oldCategory,
     required String newCategory,
   }) updateCategory;
-  final VoidCallback syncWithGoogleSpreadsheet;
+  final VoidCallback pushToGoogleSpreadsheet;
   final bool isLoading;
   final String spreadsheetId;
 

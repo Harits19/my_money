@@ -214,7 +214,7 @@ class _RecordProviderState extends State<RecordProvider> {
       spreadsheetId: spreadsheetId ?? '',
       isLoading: isLoading,
       addRecord: addRecord,
-      syncWithGoogleSpreadsheet: syncWithGoogleSpreadsheet,
+      pushToGoogleSpreadsheet: syncWithGoogleSpreadsheet,
       deleteAllRecords: deleteAllRecords,
       records: records,
       importCSV: importCSV,
