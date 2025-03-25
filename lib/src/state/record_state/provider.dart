@@ -53,7 +53,7 @@ class _RecordProviderState extends State<RecordProvider> {
     localStorage.setValue(listJson);
   }
 
-  void loadLocalStorage() async {
+  Future<void> loadLocalStorage() async {
     final localValue = localStorage.getValue();
 
     if (localValue is! List<dynamic>) {
@@ -66,6 +66,13 @@ class _RecordProviderState extends State<RecordProvider> {
 
     records = parsedValue;
     setState(() {});
+  }
+
+  void init() async {
+    setLoading(true);
+    await LocalStorageService.initPrefs();
+    await loadLocalStorage();
+    setLoading(false);
   }
 
   void deleteAllRecords() {
@@ -193,7 +200,7 @@ class _RecordProviderState extends State<RecordProvider> {
   @override
   void initState() {
     super.initState();
-    loadLocalStorage();
+    init();
   }
 
   @override

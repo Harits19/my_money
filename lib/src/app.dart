@@ -5,6 +5,7 @@ import 'package:my_money/src/services/notification_service.dart';
 import 'package:my_money/src/splash/splash_view.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/provider.dart';
+import 'package:my_money/src/state/record_state/state.dart';
 
 final GlobalKey<ScaffoldMessengerState> snackbarKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -20,17 +21,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool isLoading = true;
+  bool isLoadingNotification = true;
 
   void init() async {
     await NotificationService.init();
     await NotificationService.requestPermission();
     await NotificationService.scheduleAllTime();
-    await LocalStorageService.initPrefs();
     await Future.delayed(const Duration(
       seconds: 1,
     ));
-    isLoading = false;
+    isLoadingNotification = false;
     setState(() {});
   }
 
@@ -48,23 +48,22 @@ class _MyAppState extends State<MyApp> {
       ),
     );
 
-    if (isLoading) {
-      return const MaterialApp(
-        home: SplashView(),
-      );
-    }
-
     return DateProvider(
       child: RecordProvider(
-        builder: (context) => MaterialApp(
-          scaffoldMessengerKey: snackbarKey,
-          themeMode: ThemeMode.system,
-          darkTheme: ThemeData.dark().copyWith(
-            inputDecorationTheme: defaultTheme.inputDecorationTheme,
-          ),
-          theme: defaultTheme,
-          home: isLoading ? const SplashView() : const HomeView(),
-        ),
+        builder: (context) {
+          final isLoadingRecord = RecordState.of(context).isLoading;
+          return MaterialApp(
+            scaffoldMessengerKey: snackbarKey,
+            themeMode: ThemeMode.system,
+            darkTheme: ThemeData.dark().copyWith(
+              inputDecorationTheme: defaultTheme.inputDecorationTheme,
+            ),
+            theme: defaultTheme,
+            home: isLoadingNotification || isLoadingRecord
+                ? const SplashView()
+                : const HomeView(),
+          );
+        },
       ),
     );
   }
