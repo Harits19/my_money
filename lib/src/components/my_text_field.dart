@@ -59,15 +59,10 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
     return initialValue;
   }
 
-  late final controller = TextEditingController(
-    text: getInitialValue(),
-  );
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
+  late final controller = widget.controller ??
+      TextEditingController(
+        text: getInitialValue(),
+      );
 
   String getNumberOnly(String value) {
     if (value.isEmpty) return '';
@@ -126,8 +121,6 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
       readOnly: widget.readOnly,
       enabled: widget.enabled,
       onTap: widget.onTap,
-      // inputFormatters:
-      //     isCurrencyFormat ? [FilteringTextInputFormatter.digitsOnly] : null,
     );
   }
 }
