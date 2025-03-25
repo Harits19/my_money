@@ -1,10 +1,3 @@
-class Person {
-  String name;
-  String category;
-
-  Person(this.name, this.category);
-}
-
 extension ListExtension<T> on List<T> {
   Map<String, List<T>> groupBy(String Function(T value) getKey) {
     final Map<String, List<T>> groupedList = {};

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/components/dummy_floating_button.dart';
-import 'package:my_money/src/components/item_record_view.dart';
 import 'package:my_money/src/list_record/list_record_view.dart';
 import 'package:my_money/src/state/record_state/state.dart';
 import 'package:my_money/src/util/num_util.dart';
