@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/components/detail_record_item_view.dart';
 import 'package:my_money/src/state/record_state/model.dart';
+import 'package:my_money/src/util/date_util.dart';
 
 class DetailRecordView extends StatelessWidget {
   const DetailRecordView({
@@ -19,6 +20,7 @@ class DetailRecordView extends StatelessWidget {
     return Card(
       clipBehavior: Clip.hardEdge,
       child: ExpansionTile(
+        initiallyExpanded: true,
         clipBehavior: Clip.antiAlias,
         shape: Border.all(
           color: Colors.transparent,

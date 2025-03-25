@@ -53,7 +53,7 @@ class DetailRecordItemView extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
-      subtitle: Text("${item.category} - ${item.account}"),
+      subtitle: Text(item.notes),
     );
   }
 }

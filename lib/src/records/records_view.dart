@@ -21,10 +21,13 @@ class RecordsView extends StatelessWidget {
       child: Column(
         children: [
           ...groupedRecord.entries.map(
-            (item) => DetailRecordView(
-              list: item.value,
-              groupedTime: item.key,
-            ),
+            (item) {
+              return DetailRecordView(
+                key: Key(item.key),
+                list: item.value,
+                groupedTime: item.key,
+              );
+            },
           ),
           const DummyFloatingButton(),
         ],
