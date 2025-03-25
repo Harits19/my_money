@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:my_money/src/components/dummy_floating_button.dart';
 import 'package:my_money/src/records/components/detail_record_view.dart';
 import 'package:my_money/src/state/record_state/state.dart';

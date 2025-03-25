@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/home/home_view.dart';
-import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/local_storage_service.dart';
 import 'package:my_money/src/services/notification_service.dart';
 import 'package:my_money/src/splash/splash_view.dart';
-import 'package:my_money/src/state/category_state/state.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/provider.dart';
-import 'package:my_money/src/state/record_state/state.dart';
 
 final GlobalKey<ScaffoldMessengerState> snackbarKey =
     GlobalKey<ScaffoldMessengerState>();
