@@ -24,9 +24,9 @@ class _MyAppState extends State<MyApp> {
 
   void init() async {
     await NotificationService.init();
+    await NotificationService.requestPermission();
     await NotificationService.scheduleAllTime();
     await LocalStorageService.initPrefs();
-    await NotificationService.requestPermission();
     await Future.delayed(const Duration(
       seconds: 1,
     ));

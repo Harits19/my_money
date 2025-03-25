@@ -12,14 +12,12 @@ class ItemRecordView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView(
-        children: [
-          ...item.map(
-            (item) => DetailRecordItemView(item: item),
-          ),
-        ],
-      ),
+    return ListView(
+      children: [
+        ...item.map(
+          (item) => DetailRecordItemView(item: item),
+        ),
+      ],
     );
   }
 }

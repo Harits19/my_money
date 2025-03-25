@@ -13,7 +13,7 @@ class RecordsView extends StatelessWidget {
     final records = RecordState.of(context).filterByMonth;
 
     final groupedRecord = records.groupBy((value) {
-      return  value.time.format1();
+      return value.time.format2();
     });
 
     return Padding(

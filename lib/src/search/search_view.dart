@@ -31,8 +31,10 @@ class _SearchViewState extends State<SearchView> {
               ),
             ),
             const Divider(),
-            ItemRecordView(
-              item: RecordState.of(context).search(search),
+            Expanded(
+              child: ItemRecordView(
+                item: RecordState.of(context).search(search),
+              ),
             )
           ],
         ),
