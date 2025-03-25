@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_money/src/components/my_text_field.dart';
 import 'package:my_money/src/util/string_util.dart';
 
 class MyAutoComplete extends StatelessWidget {
@@ -11,6 +12,7 @@ class MyAutoComplete extends StatelessWidget {
     this.textInputType,
     this.validator,
     this.initialValue,
+    this.required = false,
   });
 
   final List<String> options;
@@ -20,6 +22,7 @@ class MyAutoComplete extends StatelessWidget {
   final int? maxLines;
   final FormFieldValidator<String>? validator;
   final TextEditingValue? initialValue;
+  final bool required;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +37,13 @@ class MyAutoComplete extends StatelessWidget {
       },
       initialValue: initialValue,
       fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
-        return TextFormField(
+        return MyTextFormField(
           keyboardType: textInputType,
           controller: controller,
           onChanged: onChanged,
           focusNode: focusNode,
           decoration: decoration,
+          required: required,
           validator: validator,
           maxLines: maxLines,
           onFieldSubmitted: (String value) {

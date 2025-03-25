@@ -6,7 +6,6 @@ import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/file_service.dart';
 import 'package:my_money/src/services/google_sheet_service/service.dart';
 import 'package:my_money/src/services/local_storage_service.dart';
-import 'package:my_money/src/state/category_state/state.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 import 'package:my_money/src/state/record_state/state.dart';
@@ -175,25 +174,23 @@ class _RecordProviderState extends State<RecordProvider> {
     setRecords(newRecords);
   }
 
+  void updateCategory(
+      {required String oldCategory, required String newCategory}) {
+    final newRecord = records.map(
+      (e) {
+        if (e.category == oldCategory) {
+          e.category = newCategory;
+        }
+        return e;
+      },
+    ).toList();
+    setRecords(newRecord);
+  }
+
   void deleteRecord(RecordModel value) {
     final newRecords = [...records];
     final index = newRecords.indexWhere((item) => item.id == value.id);
     newRecords.removeAt(index);
-    setRecords(newRecords);
-  }
-
-  void updateCategory({
-    required CategoryModel oldCategory,
-    required CategoryModel newCategory,
-  }) {
-    final newRecords = records.map((item) {
-      if (item.category != oldCategory.name) {
-        return item;
-      }
-      item.category = newCategory.name;
-      return item;
-    }).toList();
-
     setRecords(newRecords);
   }
 

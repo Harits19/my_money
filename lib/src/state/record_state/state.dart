@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_money/src/model/tuple.dart';
-import 'package:my_money/src/state/category_state/state.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 
 class RecordState extends InheritedWidget {
@@ -32,8 +31,8 @@ class RecordState extends InheritedWidget {
 
   final void Function(RecordModel) updateRecord;
   final void Function({
-    required CategoryModel oldCategory,
-    required CategoryModel newCategory,
+    required String oldCategory,
+    required String newCategory,
   }) updateCategory;
   final VoidCallback syncWithGoogleSpreadsheet;
   final bool isLoading;

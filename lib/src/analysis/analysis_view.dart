@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/components/dummy_floating_button.dart';
+import 'package:my_money/src/edit_category/edit_category_view.dart';
 import 'package:my_money/src/list_record/list_record_view.dart';
 import 'package:my_money/src/state/record_state/state.dart';
 import 'package:my_money/src/util/num_util.dart';
@@ -44,6 +45,16 @@ class AnalysisView extends StatelessWidget {
                           final percent = progressValue.toPercent();
 
                           return ListTile(
+                            onLongPress: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditCategoryView(
+                                    oldCategory: e.key,
+                                  ),
+                                ),
+                              );
+                            },
                             onTap: () {
                               Navigator.push(
                                 context,

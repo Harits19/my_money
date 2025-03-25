@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_money/src/services/debug_service.dart';
+import 'package:my_money/src/util/string_util.dart';
 
 enum MyTextFieldFormat { currency, normal }
 
@@ -17,6 +18,10 @@ class MyTextFormField extends StatefulWidget {
     this.myTextFieldType = MyTextFieldFormat.normal,
     this.validator,
     this.initialValue,
+    this.required = false,
+    this.controller,
+    this.focusNode,
+    this.onFieldSubmitted,
   });
 
   final TextInputType? keyboardType;
@@ -29,6 +34,10 @@ class MyTextFormField extends StatefulWidget {
   final MyTextFieldFormat myTextFieldType;
   final String? Function(String? value)? validator;
   final String? initialValue;
+  final bool required;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final ValueChanged<String>? onFieldSubmitted;
 
   @override
   State<MyTextFormField> createState() => _MyTextFormFieldState();
@@ -82,7 +91,13 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
     return TextFormField(
       controller: controller,
       keyboardType: widget.keyboardType,
-      validator: widget.validator,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      validator: (value) {
+        if (widget.required && value.isNullEmpty) {
+          return "Required";
+        }
+        return widget.validator?.call(value);
+      },
       maxLines: widget.maxLines,
       onChanged: (value) {
         myLog.i("newValue $value");
