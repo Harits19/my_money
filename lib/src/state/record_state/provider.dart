@@ -44,8 +44,7 @@ class _RecordProviderState extends State<RecordProvider> {
     final parsedList = RecordModel.fromCSV(
       value: list,
     ).toList();
-    records = parsedList;
-    setState(() {});
+    setRecords(parsedList);
 
     syncLocalStorage(parsedList);
   }
@@ -67,8 +66,7 @@ class _RecordProviderState extends State<RecordProvider> {
 
     final parsedValue = RecordModel.fromJsonList(localValue);
 
-    records = parsedValue;
-    setState(() {});
+    setRecords(parsedValue);
   }
 
   void init() async {
@@ -232,7 +230,8 @@ class _RecordProviderState extends State<RecordProvider> {
       isDateSeparated: false,
     );
 
-    records = recordsFromSheet;
+    setRecords(recordsFromSheet);
+
     isLoading = false;
     setState(() {});
   }
