@@ -75,7 +75,10 @@ class RecordModel implements SheetModel, JsonModel {
     );
   }
 
-  static List<RecordModel> fromCSV(List<List<String>> value) {
+  static List<RecordModel> fromCSV({
+    required List<List<dynamic>> value,
+    bool isDateSeparated = true,
+  }) {
     value.removeAt(0);
 
     final result = value.asMap().entries.map((entry) {
@@ -83,18 +86,31 @@ class RecordModel implements SheetModel, JsonModel {
       try {
         final format = DateFormat('MMM dd, yyyy h:mm a');
 
-        final dateTime = format.tryParse("${item[0]},${item[1]}");
-        return RecordModel(
-          id: uniqueId(),
-          time: dateTime ?? DateTime.now(),
-          type: RecordType.fromString(item[2]),
-          amount: (num.tryParse(item[3]) ?? 0).toInt(),
-          category: item[4],
-          account: item[5],
-          notes: item[6],
-        );
+        if (isDateSeparated) {
+          final dateTime = format.tryParse("${item[0]},${item[1]}");
+          return RecordModel(
+            id: uniqueId(),
+            time: dateTime ?? DateTime.now(),
+            type: RecordType.fromString(item[2]),
+            amount: (num.tryParse(item[3]) ?? 0).toInt(),
+            category: item[4],
+            account: item[5],
+            notes: item[6],
+          );
+        } else {
+          final dateTime = format.tryParse("${item[0]}");
+          return RecordModel(
+            id: uniqueId(),
+            time: dateTime ?? DateTime.now(),
+            type: RecordType.fromString(item[1]),
+            amount: (num.tryParse(item[2]) ?? 0).toInt(),
+            category: item[3],
+            account: item[4],
+            notes: item[5],
+          );
+        }
       } catch (e) {
-        myLog.e('index ${entry.key} value $item');
+        myLog.e('index ${entry.key} value $item error : $e');
         return null;
       }
     });
@@ -135,4 +151,3 @@ class RecordModel implements SheetModel, JsonModel {
 }
 
 typedef RecordModelKey = String Function(RecordModel item);
-

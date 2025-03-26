@@ -14,6 +14,11 @@ class SettingView extends StatelessWidget {
     final authState = AuthState.of(context);
     final isAuthenticated = authState.isAuthenticated;
     myLog.i('current accountClient in setting ${authState.maybeAuthClient}');
+    final isHaveSpreadsheetId = recordState.spreadsheetId.isNotEmpty;
+    const setAccountMessage =
+        "Set the account to get data from Google Spreadsheet";
+    final isRecordLoading = recordState.isLoading;
+
     return Column(
       children: [
         LinearProgress(
@@ -33,33 +38,39 @@ class SettingView extends StatelessWidget {
             await recordState.getCurrentSpreadsheetId();
           },
         ),
+        const Divider(),
+        const ListTile(
+          subtitle: Text(setAccountMessage),
+          enabled: false,
+        ),
+        ListTile(
+          leading: const Icon(Icons.input),
+          enabled: isHaveSpreadsheetId && !isRecordLoading,
+          title: const Text("Pull from Google Spreadsheet"),
+          onTap: () async {
+            await recordState.pullFromGoogleSpreadsheet();
+          },
+        ),
         ListTile(
           leading: const Icon(Icons.input),
           title: const Text("Push to Google Spreadsheet"),
-          subtitle: isAuthenticated
-              ? null
-              : const Text(
-                  "Set the account to push data to Google Spreadsheet",
-                ),
           onTap: recordState.pushToGoogleSpreadsheet,
-          enabled: isAuthenticated,
+          enabled: isAuthenticated && !isRecordLoading,
         ),
-        const Divider(),
-        recordState.spreadsheetId.isNotEmpty
-            ? ListTile(
-                leading: const Icon(Icons.link),
-                title: const Text('Open Spreadsheet'),
-                subtitle: Text(recordState.spreadsheetId),
-                onTap: () async {
-                  final link =
-                      "https://docs.google.com/spreadsheets/d/${recordState.spreadsheetId}/edit";
-                  await launchUrl(
-                    Uri.parse(link),
-                    mode: LaunchMode.externalApplication,
-                  );
-                },
-              )
-            : const SizedBox(),
+        ListTile(
+          leading: const Icon(Icons.link),
+          title: const Text('Open Spreadsheet'),
+          subtitle: Text(recordState.spreadsheetId),
+          enabled: isHaveSpreadsheetId && !isRecordLoading,
+          onTap: () async {
+            final link =
+                "https://docs.google.com/spreadsheets/d/${recordState.spreadsheetId}/edit";
+            await launchUrl(
+              Uri.parse(link),
+              mode: LaunchMode.externalApplication,
+            );
+          },
+        )
       ],
     );
   }

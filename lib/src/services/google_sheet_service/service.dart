@@ -91,5 +91,8 @@ class GoogleSheetService {
         "editSpreadSheet - success edit spreadsheet with result ${result.toJson()}");
   }
 
-  Future<void> getSpreadsheet() async {}
+  Future<ValueRange> getSpreadsheet(String id) async {
+    final result = await sheetsApi.spreadsheets.values.get(id, "A1:F");
+    return result;
+  }
 }

@@ -21,13 +21,15 @@ class RecordState extends InheritedWidget {
     required this.deleteRecord,
     required this.updateCategory,
     required this.getCurrentSpreadsheetId,
+    required this.pullFromGoogleSpreadsheet,
   });
 
   final List<RecordModel> records;
   final DateTime selectedDate;
   final VoidCallback importCSV;
   final VoidCallback deleteAllRecords;
-  final Future<void> Function() getCurrentSpreadsheetId;
+  final Future<void> Function() getCurrentSpreadsheetId,
+      pullFromGoogleSpreadsheet;
   final ValueChanged<RecordModel> addRecord;
   final ValueChanged<RecordModel> deleteRecord;
 

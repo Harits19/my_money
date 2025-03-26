@@ -11,6 +11,7 @@ import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 import 'package:my_money/src/state/record_state/state.dart';
 import 'package:my_money/src/util/network_util.dart';
+import 'package:my_money/src/util/string_util.dart';
 
 class RecordProvider extends StatefulWidget {
   const RecordProvider({
@@ -40,7 +41,9 @@ class _RecordProviderState extends State<RecordProvider> {
     final list = await CsvService.readFromFile(file);
     if (list == null) return;
 
-    final parsedList = RecordModel.fromCSV(list).toList();
+    final parsedList = RecordModel.fromCSV(
+      value: list,
+    ).toList();
     records = parsedList;
     setState(() {});
 
@@ -214,6 +217,26 @@ class _RecordProviderState extends State<RecordProvider> {
     setState(() {});
   }
 
+  Future<void> pullFromGoogleSpreadsheet() async {
+    if (spreadsheetId.isNullEmpty) return;
+    final authClient = AuthState.of(context).authClient;
+    final googleSheetService = GoogleSheetService(
+      client: authClient,
+    );
+
+    setLoading(true);
+    final result = await googleSheetService.getSpreadsheet(spreadsheetId!);
+    final values = result.values ?? [];
+    final recordsFromSheet = RecordModel.fromCSV(
+      value: values,
+      isDateSeparated: false,
+    );
+
+    records = recordsFromSheet;
+    isLoading = false;
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -223,6 +246,7 @@ class _RecordProviderState extends State<RecordProvider> {
   @override
   Widget build(BuildContext context) {
     return RecordState(
+      pullFromGoogleSpreadsheet: pullFromGoogleSpreadsheet,
       getCurrentSpreadsheetId: getCurrentSpreadsheetId,
       deleteRecord: deleteRecord,
       updateRecord: updateRecord,
