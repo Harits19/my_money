@@ -87,13 +87,18 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
       controller: controller,
       keyboardType: widget.keyboardType,
       onFieldSubmitted: widget.onFieldSubmitted,
+      decoration: widget.decoration,
+      readOnly: widget.readOnly,
+      enabled: widget.enabled,
+      onTap: widget.onTap,
+      maxLines: widget.maxLines,
+      focusNode: widget.focusNode,
       validator: (value) {
         if (widget.required && value.isNullEmpty) {
           return "Required";
         }
         return widget.validator?.call(value);
       },
-      maxLines: widget.maxLines,
       onChanged: (value) {
         myLog.i("newValue $value");
 
@@ -117,10 +122,6 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
 
         widget.onChanged?.call(value);
       },
-      decoration: widget.decoration,
-      readOnly: widget.readOnly,
-      enabled: widget.enabled,
-      onTap: widget.onTap,
     );
   }
 }
