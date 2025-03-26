@@ -1,18 +1,20 @@
 import 'package:googleapis/drive/v2.dart';
 import 'package:googleapis/sheets/v4.dart';
+import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:my_money/src/services/debug_service.dart';
-import 'package:my_money/src/services/google_service.dart';
 import 'package:my_money/src/util/num_util.dart';
 part 'model.dart';
 
 class GoogleSheetService {
-  static final services = GoogleService(
-      scopes: [SheetsApi.driveFileScope, DriveApi.driveFileScope]);
+  GoogleSheetService({
+    required this.client,
+  });
 
-  static Future<Spreadsheet> createSpreadsheet() async {
-    final client = await services.authClient;
+  final AuthClient client;
+  late final sheetsApi = SheetsApi(client);
+  late final driveApi = DriveApi(client);
 
-    final sheetsApi = SheetsApi(client);
+  Future<Spreadsheet> createSpreadsheet() async {
     final Spreadsheet spreadsheet = Spreadsheet(
       properties: SpreadsheetProperties(title: "UangKu - Spreadsheet"),
     );
@@ -25,11 +27,7 @@ class GoogleSheetService {
     return response;
   }
 
-  static Future<File?> getSpreadsheetFile() async {
-    final client = await services.authClient;
-
-    final driveApi = DriveApi(client);
-
+  Future<File?> getSpreadsheetFile() async {
     const query = "mimeType='application/vnd.google-apps.spreadsheet'";
 
     final fileList = await driveApi.files.list(q: query, spaces: 'drive');
@@ -44,8 +42,7 @@ class GoogleSheetService {
     return items.first;
   }
 
-  static _MapValueReturn<String, List<List<String>>>
-      _mapValues<T extends SheetModel>({
+  _MapValueReturn<String, List<List<String>>> _mapValues<T extends SheetModel>({
     required List<T> values,
     required List<String> listOfTitles,
   }) {
@@ -68,7 +65,7 @@ class GoogleSheetService {
     return _MapValueReturn(range, mappedValues);
   }
 
-  static Future<void> editSpreadSheet<T extends SheetModel>({
+  Future<void> editSpreadSheet<T extends SheetModel>({
     required String id,
     required List<T> list,
     required List<String> listOfTitles,
@@ -80,10 +77,6 @@ class GoogleSheetService {
 
     final values = resultMap.item2;
     final range = resultMap.item1;
-
-    final client = await services.authClient;
-
-    final sheetsApi = SheetsApi(client);
 
     final request = ValueRange()..values = values;
 
@@ -97,4 +90,6 @@ class GoogleSheetService {
     myLog.i(
         "editSpreadSheet - success edit spreadsheet with result ${result.toJson()}");
   }
+
+  Future<void> getSpreadsheet() async {}
 }

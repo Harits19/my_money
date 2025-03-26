@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_money/src/components/linear_progress.dart';
+import 'package:my_money/src/services/debug_service.dart';
+import 'package:my_money/src/state/auth_state/state.dart';
 import 'package:my_money/src/state/record_state/state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -9,6 +11,9 @@ class SettingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final recordState = RecordState.of(context);
+    final authState = AuthState.of(context);
+    final isAuthenticated = authState.isAuthenticated;
+    myLog.i('current accountClient in setting ${authState.maybeAuthClient}');
     return Column(
       children: [
         LinearProgress(
@@ -22,12 +27,22 @@ class SettingView extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.input),
           title: const Text("Set Account"),
-          onTap: recordState.changeAccount,
+          onTap: () async {
+            await authState.setAccount();
+            await Future.delayed(const Duration(seconds: 1));
+            await recordState.getCurrentSpreadsheetId();
+          },
         ),
         ListTile(
           leading: const Icon(Icons.input),
           title: const Text("Push to Google Spreadsheet"),
+          subtitle: isAuthenticated
+              ? null
+              : const Text(
+                  "Set the account to push data to Google Spreadsheet",
+                ),
           onTap: recordState.pushToGoogleSpreadsheet,
+          enabled: isAuthenticated,
         ),
         const Divider(),
         recordState.spreadsheetId.isNotEmpty

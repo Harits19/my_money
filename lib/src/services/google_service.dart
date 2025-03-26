@@ -16,6 +16,7 @@ class GoogleService {
     return _authClient;
   }
 
+  @Deprecated("use AuthProvider to get current AuthClient value")
   Future<AuthClient> get authClient async {
     if (_authClient != null) {
       myLog.i('authClient - returned current _authClient');
@@ -68,8 +69,8 @@ class GoogleService {
     return client;
   }
 
-  Future<void> changeAccount() async {
+  Future<AuthClient> changeAccount() async {
     await googleSignIn.signOut();
-    await authenticate();
+    return await authenticate();
   }
 }

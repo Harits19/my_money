@@ -6,6 +6,7 @@ import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/services/file_service.dart';
 import 'package:my_money/src/services/google_sheet_service/service.dart';
 import 'package:my_money/src/services/local_storage_service.dart';
+import 'package:my_money/src/state/auth_state/state.dart';
 import 'package:my_money/src/state/date_state.dart';
 import 'package:my_money/src/state/record_state/model.dart';
 import 'package:my_money/src/state/record_state/state.dart';
@@ -101,6 +102,11 @@ class _RecordProviderState extends State<RecordProvider> {
   }
 
   void syncWithGoogleSpreadsheet() async {
+    final authClient = AuthState.of(context).authClient;
+    final googleSheetService = GoogleSheetService(
+      client: authClient,
+    );
+
     try {
       setLoading(true);
 
@@ -111,13 +117,13 @@ class _RecordProviderState extends State<RecordProvider> {
         return;
       }
 
-      final file = await GoogleSheetService.getSpreadsheetFile();
+      final file = await googleSheetService.getSpreadsheetFile();
       final id = file?.id;
 
       if (id == null) {
         myLog.i(
             "startSync - returned id file is null, start create new file for backup data");
-        final createdSpreadsheet = await GoogleSheetService.createSpreadsheet();
+        final createdSpreadsheet = await googleSheetService.createSpreadsheet();
         final createdId = createdSpreadsheet.spreadsheetId;
 
         if (createdId == null) {
@@ -127,7 +133,7 @@ class _RecordProviderState extends State<RecordProvider> {
 
         setLink(createdId);
 
-        await GoogleSheetService.editSpreadSheet(
+        await googleSheetService.editSpreadSheet(
           id: createdId,
           list: records,
           listOfTitles: RecordModel.listOfTitles(),
@@ -137,7 +143,7 @@ class _RecordProviderState extends State<RecordProvider> {
 
         myLog
             .i("startSync - returned id file is not null, start edit the file");
-        await GoogleSheetService.editSpreadSheet(
+        await googleSheetService.editSpreadSheet(
           id: id,
           list: records,
           listOfTitles: RecordModel.listOfTitles(),
@@ -194,8 +200,18 @@ class _RecordProviderState extends State<RecordProvider> {
     setRecords(newRecords);
   }
 
-  void changeAccount() {
-    GoogleSheetService.services.changeAccount();
+  Future<void> getCurrentSpreadsheetId() async {
+    final authClient = AuthState.of(context).authClient;
+    final googleSheetService = GoogleSheetService(
+      client: authClient,
+    );
+
+    setLoading(true);
+    final file = await googleSheetService.getSpreadsheetFile();
+
+    spreadsheetId = file?.id;
+    isLoading = false;
+    setState(() {});
   }
 
   @override
@@ -207,9 +223,9 @@ class _RecordProviderState extends State<RecordProvider> {
   @override
   Widget build(BuildContext context) {
     return RecordState(
+      getCurrentSpreadsheetId: getCurrentSpreadsheetId,
       deleteRecord: deleteRecord,
       updateRecord: updateRecord,
-      changeAccount: changeAccount,
       updateCategory: updateCategory,
       spreadsheetId: spreadsheetId ?? '',
       isLoading: isLoading,
