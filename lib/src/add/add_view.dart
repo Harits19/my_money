@@ -29,10 +29,10 @@ class _AddViewState extends State<AddView> {
   late var type = recordModel?.type ?? RecordType.expense;
   late var amount = recordModel?.amount;
   late var category =
-      recordModel?.category ?? recordState.categories.lastOrNull;
-  late var account = recordModel?.account ?? recordState.accounts.lastOrNull;
+      recordModel?.category ?? recordState.categories.firstOrNull;
+  late var account = recordModel?.account ?? recordState.accounts.firstOrNull;
   late var notes = recordModel?.notes;
-  late var isUpdateFlow = widget.initialValue != null;
+  late final isUpdateFlow = widget.initialValue != null;
 
   @override
   Widget build(BuildContext context) {
