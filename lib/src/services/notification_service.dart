@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:my_money/src/add/add_view.dart';
+import 'package:my_money/src/app.dart';
 import 'package:my_money/src/services/debug_service.dart';
 import 'package:my_money/src/util/date_util.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -9,11 +11,15 @@ class NotificationService {
   static final flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  static const dailyNotif = 1;
   static const testNotif = 2;
 
   static onDidReceiveNotificationResponse(details) {
-    myLog.i("onDidReceiveNotificationResponse - $details");
+    myLog.i("onDidReceiveNotificationResponse - ${details.toString()}");
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      navigatorKey.currentState?.push(
+        MaterialPageRoute(builder: (_) => const AddView()),
+      );
+    });
   }
 
   static onDidReceiveBackgroundNotificationResponse(details) {
@@ -24,7 +30,7 @@ class NotificationService {
     try {
       myLog.i("NotificationService.init start initialize notification service");
       const androidInitializationSettings =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
+          AndroidInitializationSettings('@mipmap/launcher_icon');
 
       const initializationSettings =
           InitializationSettings(android: androidInitializationSettings);
@@ -79,6 +85,8 @@ class NotificationService {
   }
 
   static Future<void> scheduleAllTime() async {
+    // final now = TimeOfDay.now();
+
     final List<TimeOfDay> times = [
       const TimeOfDay(
         hour: 8,
@@ -92,6 +100,10 @@ class NotificationService {
         hour: 18,
         minute: 00,
       ),
+      // TimeOfDay(
+      //   hour: now.hour,
+      //   minute: now.minute + 1,
+      // ),
     ];
 
     for (final time in times) {
@@ -120,6 +132,7 @@ class NotificationService {
 
       // If the scheduled time has already passed today, schedule it for the same time on the next day
       if (scheduledTime.isBefore(now)) {
+        myLog.i("scheduledTime is before now");
         scheduledTime.add(const Duration(days: 1));
       }
 
@@ -136,8 +149,10 @@ class NotificationService {
         android: androidDetails,
       );
 
+      final id = time.hour * 60 + time.minute;
+
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        dailyNotif, // Notification ID
+        id, // Notification ID
         "Add expenses", // Title
         "Remember to add your expenses today", //
         parsedTime,
@@ -149,7 +164,7 @@ class NotificationService {
       myLog.i("parsed time ${{
         "parsedTime": parsedTime.format5(),
         "currentTime": scheduledTime.format5(),
-        "id": dailyNotif,
+        "id": id,
       }}");
     } catch (e) {
       myLog.e("NotificationService.scheduleNotification $e");
